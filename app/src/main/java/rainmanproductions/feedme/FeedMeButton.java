@@ -1,55 +1,62 @@
 package rainmanproductions.feedme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.webkit.WebView;
-
-import rainmanproductions.feedme.dominos.DominosPageFlow;
-import rainmanproductions.feedme.dominos.DominosWebViewClient;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
 public class FeedMeButton extends AppCompatActivity
 {
+
+    private FeedMeButton self = this;
+    private Restaurant selectedRestaurant = Restaurant.Dominos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        final WebView webview = new WebView(this);
-        AssetReader.setAssetManager(this);
-        setContentView(webview);
-        webview.getSettings().setJavaScriptEnabled(true);
-        webview.clearHistory();
-        webview.clearFormData();
-        webview.clearCache(true);
-        webview.setWebViewClient(new DominosWebViewClient());
-        webview.loadUrl(DominosPageFlow.getStartingURL());
-        System.out.println("Leaving MainActivity on create.");
-    }
+        setContentView(R.layout.activity_feed_me_button);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_feed_me_button, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        Spinner restaurantSpinner = (Spinner) findViewById(R.id.restaurantSpinner);
+        ArrayAdapter<Restaurant> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Restaurant.values());
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        restaurantSpinner.setAdapter(arrayAdapter);
+        restaurantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
-            return true;
-        }
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                selectedRestaurant = (Restaurant) parent.getItemAtPosition(position);
+                System.out.println("Restaurant selected: " + selectedRestaurant);
+            }
 
-        return super.onOptionsItemSelected(item);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+            }
+        });
+
+        Button btnSubmit = (Button) findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                System.out.println("Order button pressed.");
+                switch (selectedRestaurant)
+                {
+                    case Dominos:
+                    {
+                        Intent intent = new Intent(self, BrowserActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+            }
+        });
     }
 }

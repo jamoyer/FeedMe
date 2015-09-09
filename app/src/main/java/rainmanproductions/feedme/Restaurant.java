@@ -1,6 +1,6 @@
 package rainmanproductions.feedme;
 
-public enum Resturants
+public enum Restaurant
 {
     Dominos,
     PapaJohns,
