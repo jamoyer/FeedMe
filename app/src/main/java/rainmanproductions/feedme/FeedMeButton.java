@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
+
+import rainmanproductions.feedme.dominos.DominosWebViewClient;
 
 public class FeedMeButton extends AppCompatActivity
 {
@@ -12,7 +15,15 @@ public class FeedMeButton extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed_me_button);
+        final WebView webview = new WebView(this);
+        setContentView(webview);
+        webview.getSettings().setJavaScriptEnabled(true);
+        webview.clearHistory();
+        webview.clearFormData();
+        webview.clearCache(true);
+        webview.setWebViewClient(new DominosWebViewClient());
+        webview.loadUrl(DominosWebViewClient.getStartingURL());
+        System.out.println("Leaving MainActivity on create.");
     }
 
     @Override
