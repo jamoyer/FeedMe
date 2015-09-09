@@ -16,33 +16,7 @@ public class DominosWebViewClient extends WebViewClient
         DominosPageFlow page = DominosPageFlow.getPageFromURL(url);
         try
         {
-            switch (page)
-            {
-                case ADDRESS_PAGE:
-                {
-                    doAddressPage(view);
-                    break;
-                }
-                case MENU_PAGE:
-                {
-                    doMenuPage(view);
-                    break;
-                }
-                case CHECKOUT_PAGE:
-                {
-                    doCheckoutPage(view);
-                    break;
-                }
-                case PAYMENT_PAGE:
-                {
-                    doPaymentPage(view);
-                    break;
-                }
-                default:
-                {
-                    System.err.println("Unexpected url: " + url);
-                }
-            }
+            doPage(view, page);
         }
         catch (IOException e)
         {
@@ -51,37 +25,11 @@ public class DominosWebViewClient extends WebViewClient
         System.out.println("Leaving Dominos on page finished.");
     }
 
-    private void doAddressPage(final WebView view) throws IOException
+    private void doPage(final WebView view, final DominosPageFlow page) throws IOException
     {
-        System.out.println("Entering doAddressPage()");
-        String page = AssetReader.readTextAsset(DominosPageFlow.ADDRESS_PAGE.getJsFilepath());
-        view.loadUrl(page);
-        System.out.println("Leaving doAddressPage()");
-    }
-
-    private void doMenuPage(final WebView view) throws IOException
-    {
-        System.out.println("Entering doMenuPage()");
-        String page = AssetReader.readTextAsset(DominosPageFlow.MENU_PAGE.getJsFilepath());
-        view.loadUrl(page);
-        System.out.println("Going to checkout.");
-        view.loadUrl(DominosPageFlow.CHECKOUT_PAGE.getURL());
-        System.out.println("Leaving doMenuPage()");
-    }
-
-    private void doCheckoutPage(final WebView view) throws IOException
-    {
-        System.out.println("Entering doCheckoutPage()");
-        String page = AssetReader.readTextAsset(DominosPageFlow.CHECKOUT_PAGE.getJsFilepath());
-        view.loadUrl(page);
-        System.out.println("Leaving doCheckoutPage()");
-    }
-
-    private void doPaymentPage(final WebView view) throws IOException
-    {
-        System.out.println("Entering doPaymentPage()");
-        String page = AssetReader.readTextAsset(DominosPageFlow.PAYMENT_PAGE.getJsFilepath());
-        view.loadUrl(page);
-        System.out.println("Leaving doPaymentPage()");
+        System.out.println("Entering doPage(page=" + page + ")");
+        String js = AssetReader.readTextAsset(page.getJsFilepath());
+        view.loadUrl(js);
+        System.out.println("Leaving doPage(page=" + page + ")");
     }
 }
