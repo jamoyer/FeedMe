@@ -1,11 +1,12 @@
 package rainmanproductions.feedme;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import rainmanproductions.feedme.dominos.DominosPageFlow;
 import rainmanproductions.feedme.dominos.DominosWebViewClient;
 
 public class FeedMeButton extends AppCompatActivity
@@ -16,13 +17,14 @@ public class FeedMeButton extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         final WebView webview = new WebView(this);
+        AssetReader.setAssetManager(this);
         setContentView(webview);
         webview.getSettings().setJavaScriptEnabled(true);
         webview.clearHistory();
         webview.clearFormData();
         webview.clearCache(true);
         webview.setWebViewClient(new DominosWebViewClient());
-        webview.loadUrl(DominosWebViewClient.getStartingURL());
+        webview.loadUrl(DominosPageFlow.getStartingURL());
         System.out.println("Leaving MainActivity on create.");
     }
 
