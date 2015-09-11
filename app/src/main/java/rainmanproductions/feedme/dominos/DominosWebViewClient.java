@@ -28,7 +28,7 @@ public class DominosWebViewClient extends WebViewClient
     private void doPage(final WebView view, final DominosPageFlow page) throws IOException
     {
         System.out.println("Entering doPage(page=" + page + ")");
-        String js = AssetReader.readTextAsset(page.getJsFilepath());
+        String js = AssetReader.readJsFile(page.getJsFilepath());
         view.loadUrl(js);
         System.out.println("Leaving doPage(page=" + page + ")");
     }

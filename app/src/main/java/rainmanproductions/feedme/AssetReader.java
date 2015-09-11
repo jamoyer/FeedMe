@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 
 public class AssetReader
 {
+    private static final String PREPEND_JS_FILENAME = "Prepend.js";
+    private static String prependJs = null;
+    private static final String APPEND_JS_FILENAME = "Append.js";
+    private static String appendJs = null;
     private static AssetManager assetManager;
 
     public static void setAssetManager(final AssetManager manager)
@@ -22,6 +26,35 @@ public class AssetReader
         setAssetManager(context.getAssets());
     }
 
+    /**
+     * Reads a JavaScript file and prepends the text from Prepend.js and appends the text from Append.js to it.
+     *
+     * @param filename
+     * @return
+     * @throws IOException
+     */
+    public static String readJsFile(final String filename) throws IOException
+    {
+        if (prependJs == null)
+        {
+            prependJs = readTextAsset(PREPEND_JS_FILENAME);
+        }
+
+        if (appendJs == null)
+        {
+            appendJs = readTextAsset(APPEND_JS_FILENAME);
+        }
+
+        return prependJs + readTextAsset(filename) + appendJs;
+    }
+
+    /**
+     * Reads a text file from the assets folder.
+     *
+     * @param filename
+     * @return
+     * @throws IOException
+     */
     public static String readTextAsset(final String filename) throws IOException
     {
         // check filename
