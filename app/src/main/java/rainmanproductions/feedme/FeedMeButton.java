@@ -52,6 +52,14 @@ public class FeedMeButton extends AppCompatActivity
                     case Dominos:
                     {
                         Intent intent = new Intent(self, BrowserActivity.class);
+                        intent.putExtra("restaurant", Restaurant.Dominos);
+                        startActivity(intent);
+                        break;
+                    }
+                    case PapaJohns:
+                    {
+                        Intent intent = new Intent(self, BrowserActivity.class);
+                        intent.putExtra("restaurant", Restaurant.PapaJohns);
                         startActivity(intent);
                         break;
                     }
