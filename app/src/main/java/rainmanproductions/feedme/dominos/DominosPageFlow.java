@@ -1,6 +1,9 @@
 package rainmanproductions.feedme.dominos;
 
-public enum DominosPageFlow
+import rainmanproductions.feedme.Restaurant;
+import rainmanproductions.feedme.RestaurantPageFlow;
+
+public enum DominosPageFlow implements RestaurantPageFlow
 {
     ADDRESS_PAGE("https://www.dominos.com/en/pages/order/#/locations/search/", "AddressPage.js"),
     MENU_PAGE("https://www.dominos.com/en/pages/order/#/section/Food/category/AllEntrees/", "MenuPage.js"),
@@ -23,12 +26,31 @@ public enum DominosPageFlow
         return this.url;
     }
 
+    @Override
+    public String getStartingURL()
+    {
+        return ADDRESS_PAGE.getURL();
+    }
+
+    @Override
     public String getJsFilepath()
     {
         return this.jsFilepath;
     }
 
-    public static DominosPageFlow getPageFromURL(final String url)
+    @Override
+    public RestaurantPageFlow getPageFromURL(String url)
+    {
+        return getDominosPageFromURL(url);
+    }
+
+    @Override
+    public Restaurant getRestaurantType()
+    {
+        return Restaurant.Dominos;
+    }
+
+    private static DominosPageFlow getDominosPageFromURL(final String url)
     {
         if (ADDRESS_PAGE.getURL().equals(url))
         {
@@ -47,10 +69,5 @@ public enum DominosPageFlow
             return PAYMENT_PAGE;
         }
         throw new IllegalArgumentException("Unrecognized page url: " + url);
-    }
-
-    public static String getStartingURL()
-    {
-        return ADDRESS_PAGE.getURL();
     }
 }

@@ -1,9 +1,12 @@
 package rainmanproductions.feedme.papajohns;
 
+import rainmanproductions.feedme.Restaurant;
+import rainmanproductions.feedme.RestaurantPageFlow;
+
 /**
- * Created by Matt on 9/9/2015.
+ * Created by Matt C on 9/9/2015.
  */
-public enum PapaJohnsPageFlow {
+public enum PapaJohnsPageFlow implements RestaurantPageFlow{
     ADDRESS_PAGE("https://www.papajohns.com/", "AddressPage.js"),
     DELIVERY_INFO_PAGE("https://www.papajohns.com/order/stores-near-me", "DeliveryInfoPage.js"),
     ORDER_PAGE("https://www.papajohns.com/order/menu", "OrderPage.js"),
@@ -28,12 +31,31 @@ public enum PapaJohnsPageFlow {
         return this.url;
     }
 
+    @Override
+    public String getStartingURL()
+    {
+        return ADDRESS_PAGE.getURL();
+    }
+
+    @Override
     public String getJsFilepath()
     {
         return this.jsFilepath;
     }
 
-    public static PapaJohnsPageFlow getPageFromURL(final String url)
+    @Override
+    public RestaurantPageFlow getPageFromURL(String url)
+    {
+        return getPapaJohnsPageFromURL(url);
+    }
+
+    @Override
+    public Restaurant getRestaurantType()
+    {
+        return Restaurant.PapaJohns;
+    }
+
+    public static PapaJohnsPageFlow getPapaJohnsPageFromURL(final String url)
     {
         if (ADDRESS_PAGE.getURL().equals(url))
         {
@@ -60,11 +82,6 @@ public enum PapaJohnsPageFlow {
             return CHECKOUT_PAGE;
         }
         throw new IllegalArgumentException("Unrecognized page url: " + url + " Substring was " + (url+"padding to test for substring so I don't have to write an if statement and there are always at least 50 chars yo").substring(0,50));
-    }
-
-    public static String getStartingURL()
-    {
-        return ADDRESS_PAGE.getURL();
     }
 
 }
