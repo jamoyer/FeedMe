@@ -39,7 +39,8 @@ public class RestaurantWebViewClient extends WebViewClient
     {
         System.out.println("Entering doPage(page=" + page + ")");
         String js = AssetReader.readJsFile(page.getJsFilepath());
-        view.loadUrl(js);
+        String prepprocessedJs = Preprocessor.preprocess(js);
+        view.loadUrl(prepprocessedJs);
         System.out.println("Leaving doPage(page=" + page + ")");
     }
 }

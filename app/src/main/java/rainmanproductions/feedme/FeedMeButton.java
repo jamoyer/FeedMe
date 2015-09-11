@@ -9,6 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.userinformation.UserInformationAccessor;
+
 public class FeedMeButton extends AppCompatActivity
 {
 
@@ -20,6 +23,10 @@ public class FeedMeButton extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_me_button);
+
+        UserInformationAccessor.init(this);
+        UserInformationAccessor.getInstance().putInfo(InfoType.FIRST_NAME, "Jacob");
+        UserInformationAccessor.getInstance().putInfo(InfoType.LAST_NAME, "Not Moyer");
 
         Spinner restaurantSpinner = (Spinner) findViewById(R.id.restaurantSpinner);
         ArrayAdapter<Restaurant> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Restaurant.values());

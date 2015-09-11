@@ -1,5 +1,5 @@
-document.getElementById('First_Name').value = 'Bob';
-document.getElementById('Last_Name').value = 'Bobenstein';
+document.getElementById('First_Name').value = 'FIRST_NAME';
+document.getElementById('Last_Name').value = 'LAST_NAME';
 document.getElementById('Email').value = 'bob@gmail.com';
 document.getElementById('Callback_Phone').value = '5558675309';
 document.getElementById('Email_Opt_In').checked = false;
