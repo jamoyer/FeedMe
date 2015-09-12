@@ -7,8 +7,6 @@ import android.webkit.WebViewClient;
 
 import java.io.IOException;
 
-import rainmanproductions.feedme.AssetReader;
-
 
 public class RestaurantWebViewClient extends WebViewClient
 {
@@ -39,7 +37,7 @@ public class RestaurantWebViewClient extends WebViewClient
     {
         System.out.println("Entering doPage(page=" + page + ")");
         String js = AssetReader.readJsFile(page.getJsFilepath());
-        String prepprocessedJs = Preprocessor.preprocess(js);
+        String prepprocessedJs = Preprocessor.process(js);
         view.loadUrl(prepprocessedJs);
         System.out.println("Leaving doPage(page=" + page + ")");
     }

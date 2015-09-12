@@ -1,44 +1,49 @@
 package rainmanproductions.feedme;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
-/**
- * Created by Jamoyer on 9/10/2015.
- */
 public class Preprocessor
 {
-    public static String preprocess(String input)
+    /**
+     * Parses the input string and replaces all instances of InfoType strings and replaces them with
+     * information from the App Preferences.
+     *
+     * @param input
+     * @return A new String where all InfoTypes are replaced with real information.
+     */
+    public static String process(final String input)
     {
+        // check for invalid input
         if (input == null)
         {
             throw new IllegalArgumentException("Input was null");
         }
+
+        // get the info accessor
         UserInformationAccessor accessor = UserInformationAccessor.getInstance();
-        List<InfoType> neededTypes = new LinkedList<>();
-        for(InfoType infoType: InfoType.values())
+
+        // replace all InfoTypes with real data
+        String output = input;
+        for (InfoType infoType : InfoType.values())
         {
-            if (input.contains(infoType.toString()))
+            // only try to replace data if the input contains the specific InfoType
+            if (output.contains(infoType.toString()))
             {
-                neededTypes.add(infoType);
+                String returnedInfo = accessor.getInfo(infoType);
+                // retrieve information if necessary
+                if (returnedInfo == null)
+                {
+                    returnedInfo = retrieveInfo(infoType);
+                }
+                output = output.replaceAll(infoType.toString(), returnedInfo);
             }
         }
-        for(InfoType infoType: neededTypes)
-        {
-            String returnedInfo = accessor.getInfo(infoType);
-            if(returnedInfo == null)
-            {
-                returnedInfo = promptUser(infoType);
-            }
-            input = input.replaceAll(infoType.toString(), returnedInfo);
-        }
-        return input;
+
+        return output;
     }
 
-    public static String promptUser(InfoType infoType)
+    private static String retrieveInfo(InfoType infoType)
     {
         //todo
         return null;
