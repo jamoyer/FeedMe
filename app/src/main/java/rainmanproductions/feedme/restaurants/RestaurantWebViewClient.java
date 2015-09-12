@@ -1,4 +1,4 @@
-package rainmanproductions.feedme; /**
+package rainmanproductions.feedme.restaurants; /**
  * Created by Matt C on 9/10/2015.
  */
 
@@ -7,12 +7,15 @@ import android.webkit.WebViewClient;
 
 import java.io.IOException;
 
+import rainmanproductions.feedme.AssetReader;
+import rainmanproductions.feedme.userinformation.UserInfoPreprocessor;
+
 
 public class RestaurantWebViewClient extends WebViewClient
 {
     RestaurantPageFlow pageFlow;
 
-    RestaurantWebViewClient(RestaurantPageFlow pageFlow)
+    public RestaurantWebViewClient(RestaurantPageFlow pageFlow)
     {
         this.pageFlow = pageFlow;
     }
@@ -37,7 +40,7 @@ public class RestaurantWebViewClient extends WebViewClient
     {
         System.out.println("Entering doPage(page=" + page + ")");
         String js = AssetReader.readJsFile(page.getJsFilepath());
-        String prepprocessedJs = Preprocessor.process(js);
+        String prepprocessedJs = UserInfoPreprocessor.process(js);
         view.loadUrl(prepprocessedJs);
         System.out.println("Leaving doPage(page=" + page + ")");
     }

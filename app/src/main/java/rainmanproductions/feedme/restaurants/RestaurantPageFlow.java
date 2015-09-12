@@ -1,4 +1,4 @@
-package rainmanproductions.feedme;
+package rainmanproductions.feedme.restaurants;
 
 /**
  * Created by Matt C on 9/10/2015.

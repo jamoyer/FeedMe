@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    tools:context="rainmanproductions.feedme.userinformation.UserInformationActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/userInformationHeadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter user information here which will be used to order food with. Don't forget to save!"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+
+        <EditText
+            android:id="@+id/userInformationFirstName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:inputType="textPersonName">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationMiddleName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Middle Name"
+            android:inputType="textPersonName">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationLastName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:inputType="textPersonName">
+        </EditText>
+
+        <!-- Birth day date picker -->
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:onClick="showDatePickerDialog"
+            android:text="Birthday"/>
+
+        <EditText
+            android:id="@+id/userInformationEmail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationPhoneNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationCreditCardNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Credit Card Number"
+            android:inputType="number"
+            android:maxLength="16">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationCreditCardCSV"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Credit Card Security Code"
+            android:inputType="number"
+            android:maxLength="3">
+        </EditText>
+
+        <Spinner
+            android:id="@+id/userInformationCreditCardExpMonth"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/userInformationCreditCardExpYear"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Credit Card Exp Year"
+            android:inputType="number"
+            android:maxLength="4">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationBillingStreetAddress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing Street Address"
+            android:inputType="textPostalAddress">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationBillingCity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing City"
+            android:inputType="text">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationBillingState"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing State"
+            android:inputType="text">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationBillingZipCode"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing Zip Code"
+            android:inputType="number"
+            android:maxLength="5">
+        </EditText>
+
+        <EditText
+            android:id="@+id/userInformationBillingCountry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing Country"
+            android:inputType="text">
+        </EditText>
+
+    </LinearLayout>
+</ScrollView>

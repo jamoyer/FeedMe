@@ -1,31 +1,48 @@
 package rainmanproductions.feedme.userinformation;
 
+import rainmanproductions.feedme.R;
+
 public enum InfoType
 {
-    FIRST_NAME,
-    MIDDLE_NAME,
-    MIDDLE_INITIAL,
-    LAST_NAME,
-    BIRTH_DAY_OF_MONTH,
-    BIRTH_MONTH,
-    BIRTH_YEAR,
-    CREDIT_CARD_NUMBER,
-    CREDIT_CARD_CSV_NUMBER,
-    CREDIT_CARD_EXP_MONTH,
-    CREDIT_CARD_EXP_YEAR,
-    STREET_ADDRESS,
-    DELIVERY_HOME_TYPE,
-    DELIVERY_APT_NUMBER,
-    DELIVERY_ZIP_CODE,
-    DELIVERY_CITY,
-    DELIVERY_STATE,
-    DELIVERY_COUNTRY,
-    EMAIL,
-    PHONE_NUMBER,
-    BILLING_HOME_TYPE,
-    BILLING_APT_NUMBER,
-    BILLING_ZIP_CODE,
-    BILLING_CITY,
-    BILLING_STATE,
-    BILLING_COUNTRY;
+    FIRST_NAME(R.id.userInformationFirstName),
+    MIDDLE_NAME(R.id.userInformationMiddleName),
+    MIDDLE_INITIAL(null), // can be taken as first letter of middle name
+    LAST_NAME(R.id.userInformationLastName),
+    BIRTH_DAY_OF_MONTH(null),
+    BIRTH_MONTH_NUMBER(null), // just store the month name, use the enum to get the number
+    BIRTH_MONTH(null),
+    BIRTH_YEAR(null),
+    EMAIL(R.id.userInformationEmail),
+    PHONE_NUMBER(R.id.userInformationPhoneNumber),
+    CREDIT_CARD_NUMBER(R.id.userInformationCreditCardNumber),
+    CREDIT_CARD_CSV_NUMBER(R.id.userInformationCreditCardCSV),
+    CREDIT_CARD_EXP_MONTH(null),
+    CREDIT_CARD_EXP_YEAR(R.id.userInformationCreditCardExpYear),
+    DELIVERY_STREET_ADDRESS(null),
+    DELIVERY_HOME_TYPE(null),
+    DELIVERY_APT_NUMBER(null),
+    DELIVERY_ZIP_CODE(null),
+    DELIVERY_CITY(null),
+    DELIVERY_STATE(null),
+    DELIVERY_COUNTRY(null),
+    BILLING_STREET_ADDRESS(R.id.userInformationBillingStreetAddress),
+    BILLING_HOME_TYPE(null),
+    BILLING_APT_NUMBER(null),
+    BILLING_ZIP_CODE(R.id.userInformationBillingZipCode),
+    BILLING_CITY(R.id.userInformationBillingCity),
+    BILLING_STATE(R.id.userInformationBillingState),
+    BILLING_COUNTRY(R.id.userInformationBillingCountry);
+
+    // null formId implies special work must be done
+    private final Integer formId;
+
+    InfoType(final Integer formId)
+    {
+        this.formId = formId;
+    }
+
+    public Integer getFormId()
+    {
+        return formId;
+    }
 }

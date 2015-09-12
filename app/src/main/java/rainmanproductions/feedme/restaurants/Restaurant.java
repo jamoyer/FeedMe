@@ -1,7 +1,7 @@
-package rainmanproductions.feedme;
+package rainmanproductions.feedme.restaurants;
 
-import rainmanproductions.feedme.dominos.DominosPageFlow;
-import rainmanproductions.feedme.papajohns.PapaJohnsPageFlow;
+import rainmanproductions.feedme.restaurants.dominos.DominosPageFlow;
+import rainmanproductions.feedme.restaurants.papajohns.PapaJohnsPageFlow;
 
 public enum Restaurant
 {

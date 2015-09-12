@@ -1,9 +1,9 @@
-package rainmanproductions.feedme;
+package rainmanproductions.feedme.userinformation;
 
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
-public class Preprocessor
+public class UserInfoPreprocessor
 {
     /**
      * Parses the input string and replaces all instances of InfoType strings and replaces them with
@@ -43,7 +43,7 @@ public class Preprocessor
         return output;
     }
 
-    private static String retrieveInfo(InfoType infoType)
+    private static String retrieveInfo(final InfoType infoType)
     {
         //todo
         return null;

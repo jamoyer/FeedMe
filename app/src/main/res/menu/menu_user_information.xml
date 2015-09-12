@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="rainmanproductions.feedme.userinformation.UserInformationActivity">
+    <item
+        android:id="@+id/userInformationSave"
+        android:title="Save"
+        app:showAsAction="never"/>
+</menu>

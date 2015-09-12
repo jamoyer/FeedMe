@@ -1,7 +1,7 @@
-package rainmanproductions.feedme.dominos;
+package rainmanproductions.feedme.restaurants.dominos;
 
-import rainmanproductions.feedme.Restaurant;
-import rainmanproductions.feedme.RestaurantPageFlow;
+import rainmanproductions.feedme.restaurants.Restaurant;
+import rainmanproductions.feedme.restaurants.RestaurantPageFlow;
 
 public enum DominosPageFlow implements RestaurantPageFlow
 {

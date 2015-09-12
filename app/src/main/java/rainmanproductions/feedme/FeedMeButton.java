@@ -3,14 +3,17 @@ package rainmanproductions.feedme;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
+import rainmanproductions.feedme.userinformation.UserInformationActivity;
 
 public class FeedMeButton extends AppCompatActivity
 {
@@ -25,10 +28,14 @@ public class FeedMeButton extends AppCompatActivity
         setContentView(R.layout.activity_feed_me_button);
 
         UserInformationAccessor.init(this);
-        UserInformationAccessor.getInstance().putInfo(InfoType.FIRST_NAME, "Jacob");
-        UserInformationAccessor.getInstance().putInfo(InfoType.LAST_NAME, "Not Moyer");
 
-        Spinner restaurantSpinner = (Spinner) findViewById(R.id.restaurantSpinner);
+        createRestaurantSpinner();
+        createOrderButton();
+    }
+
+    private void createRestaurantSpinner()
+    {
+        Spinner restaurantSpinner = (Spinner) findViewById(R.id.mainActivityRestaurantSpinner);
         ArrayAdapter<Restaurant> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Restaurant.values());
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         restaurantSpinner.setAdapter(arrayAdapter);
@@ -46,32 +53,57 @@ public class FeedMeButton extends AppCompatActivity
             {
             }
         });
+    }
 
-        Button btnSubmit = (Button) findViewById(R.id.btnSubmit);
+    private void createOrderButton()
+    {
+        Button btnSubmit = (Button) findViewById(R.id.mainActivitySubmit);
         btnSubmit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
                 System.out.println("Order button pressed.");
-                switch (selectedRestaurant)
-                {
-                    case Dominos:
-                    {
-                        Intent intent = new Intent(self, BrowserActivity.class);
-                        intent.putExtra("restaurant", Restaurant.Dominos);
-                        startActivity(intent);
-                        break;
-                    }
-                    case PapaJohns:
-                    {
-                        Intent intent = new Intent(self, BrowserActivity.class);
-                        intent.putExtra("restaurant", Restaurant.PapaJohns);
-                        startActivity(intent);
-                        break;
-                    }
-                }
+                Intent intent = new Intent(self, BrowserActivity.class);
+                intent.putExtra("restaurant", selectedRestaurant);
+                startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_feed_me_button, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id)
+        {
+            case R.id.mainActivityTopMenuUserInformation:
+            {
+                System.out.println("User Information pressed.");
+                Intent intent = new Intent(self, UserInformationActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.mainActivityTopMenuOrderPreferences:
+            {
+                System.out.println("Order Preferences pressed.");
+                //TODO
+                break;
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

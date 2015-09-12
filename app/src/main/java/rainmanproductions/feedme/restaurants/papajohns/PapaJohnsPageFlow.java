@@ -1,7 +1,7 @@
-package rainmanproductions.feedme.papajohns;
+package rainmanproductions.feedme.restaurants.papajohns;
 
-import rainmanproductions.feedme.Restaurant;
-import rainmanproductions.feedme.RestaurantPageFlow;
+import rainmanproductions.feedme.restaurants.Restaurant;
+import rainmanproductions.feedme.restaurants.RestaurantPageFlow;
 
 /**
  * Created by Matt C on 9/9/2015.

@@ -3,15 +3,18 @@ package rainmanproductions.feedme.userinformation;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class UserInformationAccessor
 {
 
     private final SharedPreferences accessPoint;
     private static UserInformationAccessor instance;
+    private static final String LOG_TAG = "UserInformationAccessor";
 
     private UserInformationAccessor(final Activity activity)
     {
+        Log.i(LOG_TAG, "Initializing Accessor.");
         accessPoint = activity.getPreferences(Context.MODE_PRIVATE);
     }
 
@@ -34,13 +37,17 @@ public class UserInformationAccessor
 
     public String getInfo(final InfoType type)
     {
-        return accessPoint.getString(type.toString(), null);
+        String stored = accessPoint.getString(type.toString(), null);
+        Log.i(LOG_TAG, "Got data: " + stored + " for " + type.name());
+        return stored;
     }
 
     public void putInfo(final InfoType type, final String info)
     {
-        SharedPreferences.Editor editor = accessPoint.edit();
-        editor.putString(type.toString(), info);
-        editor.commit();
+        accessPoint.edit()
+                   .remove(type.name())
+                   .putString(type.name(), info)
+                   .apply();
+        Log.i(LOG_TAG, "Put data: " + info + " for " + type.name());
     }
 }

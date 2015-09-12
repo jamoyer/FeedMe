@@ -9,12 +9,12 @@
                 tools:context=".FeedMeButton">
 
     <Spinner
-        android:id="@+id/restaurantSpinner"
+        android:id="@+id/mainActivityRestaurantSpinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btnSubmit"
+        android:id="@+id/mainActivitySubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Order!"/>

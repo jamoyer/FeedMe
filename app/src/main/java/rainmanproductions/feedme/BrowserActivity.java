@@ -6,6 +6,9 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import rainmanproductions.feedme.restaurants.Restaurant;
+import rainmanproductions.feedme.restaurants.RestaurantWebViewClient;
+
 public class BrowserActivity extends Activity
 {
 
