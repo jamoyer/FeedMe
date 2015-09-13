@@ -8,7 +8,6 @@ for (var i=0; i<serviceElements.length; i++)
         break;
     }
 }
-
 var homeType = document.getElementById('Address_Type_Select');
 selectOption(homeType, 'Other');
 var regionSelect = document.getElementById('Region');

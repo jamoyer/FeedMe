@@ -1,2 +1,2 @@
 }
-attemptFunc(pageInteractor, 1000, 10);
+attemptFunc(pageInteractor);
