@@ -2,7 +2,7 @@ package rainmanproductions.feedme;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -12,6 +12,7 @@ import rainmanproductions.feedme.restaurants.RestaurantWebViewClient;
 
 public class BrowserActivity extends Activity
 {
+    private static final String LOG_PREFIX = "BrowserActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,6 +34,6 @@ public class BrowserActivity extends Activity
         Restaurant restaurant = (Restaurant) getIntent().getExtras().get("restaurant");
         webview.setWebViewClient(new RestaurantWebViewClient(restaurant.getRestaurantPageFlow()));
         webview.loadUrl(restaurant.getRestaurantPageFlow().getStartingURL());
-        System.out.println("Leaving BrowserActivity onCreate()");
+        Log.i(LOG_PREFIX, "Leaving BrowserActivity onCreate()");
     }
 }

@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.DeliveryAddress;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -35,6 +36,7 @@ public class FeedMeButton extends AppCompatActivity
         createRestaurantSpinner();
         createNumberOfPeopleSpinner();
         createOrderButton();
+        createRandomOrderButton();
     }
 
     private void createNumberOfPeopleSpinner()
@@ -85,15 +87,31 @@ public class FeedMeButton extends AppCompatActivity
 
     private void createOrderButton()
     {
-        Button btnSubmit = (Button) findViewById(R.id.mainActivitySubmit);
+        Button btnSubmit = (Button) findViewById(R.id.mainActivityOrderBtn);
         btnSubmit.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                System.out.println("Order button pressed.");
+                Log.i(LOG_PREFIX, "Order button pressed.");
                 Intent intent = new Intent(self, BrowserActivity.class);
                 intent.putExtra("restaurant", selectedRestaurant);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void createRandomOrderButton()
+    {
+        Button btnSubmit = (Button) findViewById(R.id.mainActivityRandomOrderBtn);
+        btnSubmit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.i(LOG_PREFIX, "Random order button pressed.");
+                Intent intent = new Intent(self, BrowserActivity.class);
+                intent.putExtra("restaurant", FoodPicker.getUniformRandomRestaurant());
                 startActivity(intent);
             }
         });
