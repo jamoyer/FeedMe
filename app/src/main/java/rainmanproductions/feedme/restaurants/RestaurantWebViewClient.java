@@ -1,7 +1,6 @@
-package rainmanproductions.feedme.restaurants; /**
- * Created by Matt C on 9/10/2015.
- */
+package rainmanproductions.feedme.restaurants;
 
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -13,6 +12,7 @@ import rainmanproductions.feedme.userinformation.UserInfoPreprocessor;
 
 public class RestaurantWebViewClient extends WebViewClient
 {
+    private static final String LOG_PREFIX = "RestaurantWebViewClient";
     RestaurantPageFlow pageFlow;
 
     public RestaurantWebViewClient(RestaurantPageFlow pageFlow)
@@ -23,7 +23,7 @@ public class RestaurantWebViewClient extends WebViewClient
     @Override
     public void onPageFinished(final WebView view, final String url)
     {
-        System.out.println("Entering " + pageFlow.getRestaurantType() + " on page finished. url=" + url);
+        Log.i(LOG_PREFIX, "Entering " + pageFlow.getRestaurantType() + " on page finished. url=" + url);
         RestaurantPageFlow page = pageFlow.getPageFromURL(url);
         try
         {
@@ -33,15 +33,16 @@ public class RestaurantWebViewClient extends WebViewClient
         {
             e.printStackTrace();
         }
-        System.out.println("Leaving " + pageFlow.getRestaurantType() + " on page finished.");
+        Log.i(LOG_PREFIX, "Leaving " + pageFlow.getRestaurantType() + " on page finished.");
     }
 
     private void doPage(final WebView view, final RestaurantPageFlow page) throws IOException
     {
-        System.out.println("Entering doPage(page=" + page + ")");
+        Log.i(LOG_PREFIX, "Entering doPage(page=" + page + ")");
         String js = AssetReader.readJsFile(page.getJsFilepath());
         String prepprocessedJs = UserInfoPreprocessor.process(js);
         view.loadUrl(prepprocessedJs);
-        System.out.println("Leaving doPage(page=" + page + ")");
+        Log.i(LOG_PREFIX, prepprocessedJs);
+        Log.i(LOG_PREFIX, "Leaving doPage(page=" + page + ")");
     }
 }

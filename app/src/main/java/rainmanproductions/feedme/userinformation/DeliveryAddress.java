@@ -17,7 +17,7 @@ public class DeliveryAddress extends AppCompatActivity
                     InfoType.DELIVERY_UNIT_NUMBER,
                     InfoType.DELIVERY_CITY,
                     InfoType.DELIVERY_COUNTRY,
-                    InfoType.DELIVERY_STATE,
+                    InfoType.DELIVERY_STATE_NAME,
                     InfoType.DELIVERY_ZIP_CODE
             };
 
@@ -76,7 +76,7 @@ public class DeliveryAddress extends AppCompatActivity
                 field.setText(saved);
             }
         }
-        String state = accessor.getInfo(InfoType.DELIVERY_STATE);
+        String state = accessor.getInfo(InfoType.DELIVERY_STATE_NAME);
         String code = StateCodes.getCode(state);
         accessor.putInfo(InfoType.DELIVERY_STATE_CODE, code);
     }

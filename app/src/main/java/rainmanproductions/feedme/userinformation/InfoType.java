@@ -22,7 +22,7 @@ public enum InfoType
     DELIVERY_UNIT_NUMBER(R.id.deliveryUnitNumber),
     DELIVERY_ZIP_CODE(R.id.deliveryZipCode),
     DELIVERY_CITY(R.id.deliveryCity),
-    DELIVERY_STATE(R.id.deliveryState),
+    DELIVERY_STATE_NAME(R.id.deliveryState),
     DELIVERY_STATE_CODE(null),
     DELIVERY_COUNTRY(R.id.deliveryCountry),
     BILLING_STREET_ADDRESS(R.id.userInformationBillingStreetAddress),
