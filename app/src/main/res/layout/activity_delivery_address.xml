@@ -62,5 +62,10 @@
             android:inputType="text">
         </EditText>
 
+        <Button
+            android:id="@+id/deliveryAddressConfirmBtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 </ScrollView>

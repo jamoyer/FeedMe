@@ -30,5 +30,17 @@ function attemptFunc(func, sleepTime, retries)
         setTimeout(doFunc, sleepTime);
     }
 }
+function selectOption(selectElement, optionValue)
+{
+    for (var i=0; i<selectElement.options.length; i++)
+    {
+        if (selectElement.options[i].value && selectElement.options[i].value == optionValue)
+        {
+            selectElement.selectedIndex = i;
+            console.log('Set option to ' + optionValue.toString());
+            break;
+        }
+    }
+}
 function pageInteractor()
 {

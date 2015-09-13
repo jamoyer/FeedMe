@@ -1,5 +1,6 @@
 package rainmanproductions.feedme;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,13 +17,14 @@ import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.DeliveryAddress;
 import rainmanproductions.feedme.userinformation.OrderPreferences;
+import rainmanproductions.feedme.userinformation.DeliveryAddressDialog;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 import rainmanproductions.feedme.userinformation.UserInformationActivity;
 
 public class FeedMeButton extends AppCompatActivity
 {
     private static final String LOG_PREFIX = "FeedMeButton";
-    private FeedMeButton self = this;
+    private final FeedMeButton self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
     private Integer partySize = 1;
 
@@ -96,9 +98,7 @@ public class FeedMeButton extends AppCompatActivity
             public void onClick(View v)
             {
                 Log.i(LOG_PREFIX, "Order button pressed.");
-                Intent intent = new Intent(self, BrowserActivity.class);
-                intent.putExtra("restaurant", selectedRestaurant);
-                startActivity(intent);
+                doOrder();
             }
         });
     }
@@ -112,9 +112,8 @@ public class FeedMeButton extends AppCompatActivity
             public void onClick(View v)
             {
                 Log.i(LOG_PREFIX, "Random order button pressed.");
-                Intent intent = new Intent(self, BrowserActivity.class);
-                intent.putExtra("restaurant", FoodPicker.getUniformRandomRestaurant());
-                startActivity(intent);
+                selectedRestaurant = FoodPicker.getUniformRandomRestaurant();
+                doOrder();
             }
         });
     }
@@ -135,31 +134,45 @@ public class FeedMeButton extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Class<?> cls = null;
         switch (id)
         {
             case R.id.mainActivityTopMenuUserInformation:
             {
                 Log.i(LOG_PREFIX, "User Information pressed.");
-                Intent intent = new Intent(self, UserInformationActivity.class);
-                startActivity(intent);
+                cls = UserInformationActivity.class;
                 break;
             }
             case R.id.mainActivityTopMenuOrderPreferences:
             {
                 Log.i(LOG_PREFIX, "Order Preferences pressed.");
-                Intent intent = new Intent(self, OrderPreferences.class);
-                startActivity(intent);
+                cls = OrderPreferences.class;
                 break;
             }
             case R.id.mainActivityTopMenuDeliveryAddress:
             {
                 Log.i(LOG_PREFIX, "Delivery Address pressed.");
-                Intent intent = new Intent(self, DeliveryAddress.class);
-                startActivity(intent);
+                cls = DeliveryAddress.class;
                 break;
             }
         }
+        final Intent intent = new Intent(this, cls);
+        startActivity(intent);
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doOrder()
+    {
+        Dialog confirmAddressDialog = new DeliveryAddressDialog(this);
+        confirmAddressDialog.show();
+    }
+
+    public void onAddressConfirmation(final DeliveryAddressDialog dialog)
+    {
+        dialog.dismiss();
+        final Intent intent = new Intent(self, BrowserActivity.class);
+        intent.putExtra("restaurant", selectedRestaurant);
+        startActivity(intent);
     }
 }

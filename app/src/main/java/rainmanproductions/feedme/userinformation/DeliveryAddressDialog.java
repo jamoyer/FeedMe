@@ -1,0 +1,106 @@
+package rainmanproductions.feedme.userinformation;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import rainmanproductions.feedme.FeedMeButton;
+import rainmanproductions.feedme.R;
+
+public class DeliveryAddressDialog extends Dialog
+{
+    private static final String LOG_PREFIX = "DeliveryAddressDialog";
+    private static final InfoType[] INFO_TYPES =
+            {
+                    InfoType.DELIVERY_STREET_ADDRESS,
+                    InfoType.DELIVERY_UNIT_NUMBER,
+                    InfoType.DELIVERY_CITY,
+                    InfoType.DELIVERY_COUNTRY,
+                    InfoType.DELIVERY_STATE,
+                    InfoType.DELIVERY_ZIP_CODE
+            };
+
+    private final FeedMeButton parent;
+
+    public DeliveryAddressDialog(final Context context)
+    {
+        super(context);
+        this.parent = (FeedMeButton) context;
+        setContentView(R.layout.activity_delivery_address);
+
+        suggestLocation();
+        createConfirmationButton();
+    }
+
+    private void createConfirmationButton()
+    {
+        final DeliveryAddressDialog self = this;
+        Button btnSubmit = (Button) findViewById(R.id.deliveryAddressConfirmBtn);
+        btnSubmit.setText("CONFIRM");
+        btnSubmit.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.i(LOG_PREFIX, "Confirm button pressed.");
+                if (checkAllFieldsNonNull())
+                {
+                    saveFields();
+                    parent.onAddressConfirmation(self);
+
+                    // the parent should dismiss but just in case they don't
+                    dismiss();
+                }
+            }
+        });
+    }
+
+    /**
+     * Fills all the fields on the form with information that is already stored.
+     */
+    private void suggestLocation()
+    {
+        UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+
+        /*
+         * Sets all info types that have a form id
+         */
+
+        for (InfoType infoType : INFO_TYPES)
+        {
+            // unimplemented fields or special fields will be null
+            if (infoType.getFormId() != null)
+            {
+                String saved = accessor.getInfo(infoType);
+                EditText field = (EditText) findViewById(infoType.getFormId());
+                field.setText(saved);
+            }
+        }
+    }
+
+    /**
+     * Overwrites everything from all fields to the the info store.
+     */
+    private void saveFields()
+    {
+        UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+        for (InfoType infoType : INFO_TYPES)
+        {
+            // unimplemented fields or special fields will be null
+            if (infoType.getFormId() != null)
+            {
+                EditText field = (EditText) findViewById(infoType.getFormId());
+                String text = field.getText().toString();
+                accessor.putInfo(infoType, text);
+            }
+        }
+    }
+
+    private boolean checkAllFieldsNonNull()
+    {
+        return true;
+    }
+}
