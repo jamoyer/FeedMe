@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,16 +16,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import rainmanproductions.feedme.R;
 
 public class UserInformationActivity extends AppCompatActivity
 {
-
+    private static final String[] MONTHS = new DateFormatSymbols().getMonths();
+    private static final String LOG_PREFIX = UserInformationActivity.class.getSimpleName();
     private static Calendar birthday;
-    private Month creditCardExp;
+    private String creditCardExp;
+    //TODO: Credit card numbers with stars
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,22 +37,35 @@ public class UserInformationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_information);
 
-        createMonthSpinner();
         fillFields();
+        createMonthSpinner();
     }
 
     private void createMonthSpinner()
     {
         Spinner monthSpinner = (Spinner) findViewById(R.id.userInformationCreditCardExpMonth);
-        ArrayAdapter<Month> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Month.values());
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, MONTHS);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(arrayAdapter);
+        /*
+         * Sets credit card exp month
+         */
+        try
+        {
+            int creditCardMonthIndex = Integer.parseInt(UserInformationAccessor.getInstance().getInfo(InfoType.CREDIT_CARD_EXP_MONTH_NUM)) - 1;
+            monthSpinner.setSelection(creditCardMonthIndex);
+            Log.i(LOG_PREFIX, "Set month spinner to " + creditCardMonthIndex);
+        }
+        catch (NumberFormatException e)
+        {
+            Log.i(LOG_PREFIX, "Could not set month spinner: " + e.getMessage());
+        }
         monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                creditCardExp = (Month) parent.getItemAtPosition(position);
+                creditCardExp = (String) parent.getItemAtPosition(position);
                 System.out.println("Credit Card Exp Month selected: " + creditCardExp);
             }
 
@@ -64,6 +82,10 @@ public class UserInformationActivity extends AppCompatActivity
     private void fillFields()
     {
         UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+
+        /*
+         * Sets all info types that have a form id
+         */
         for (InfoType infoType : InfoType.values())
         {
             // unimplemented fields or special fields will be null
@@ -75,6 +97,25 @@ public class UserInformationActivity extends AppCompatActivity
             }
         }
         //TODO more fields and special fields
+
+        /*
+         * Sets birthday
+         */
+        String dayOfMonthString = accessor.getInfo(InfoType.BIRTH_DAY_OF_MONTH);
+        String monthNumString = accessor.getInfo(InfoType.BIRTH_MONTH_NUMBER);
+        String yearString = accessor.getInfo(InfoType.BIRTH_YEAR);
+        try
+        {
+            int dayOfMonthInt = Integer.parseInt(dayOfMonthString);
+            int yearInt = Integer.parseInt(yearString);
+            int monthNumInt = Integer.parseInt(monthNumString);
+            birthday = new GregorianCalendar(yearInt, monthNumInt, dayOfMonthInt);
+        }
+        catch (NumberFormatException e)
+        {
+            Log.i(LOG_PREFIX, e.getMessage());
+        }
+
     }
 
     /**
@@ -93,7 +134,39 @@ public class UserInformationActivity extends AppCompatActivity
                 accessor.putInfo(infoType, text);
             }
         }
-        //TODO more fields and special fields
+
+        if (birthday != null)
+        {
+            int dayOfMonth = birthday.get(Calendar.DAY_OF_MONTH);
+            int monthNum = birthday.get(Calendar.MONTH);
+            String month = birthday.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+            int year = birthday.get(Calendar.YEAR);
+
+            accessor.putInfo(InfoType.BIRTH_DAY_OF_MONTH, dayOfMonth + "");
+            accessor.putInfo(InfoType.BIRTH_MONTH_NUMBER, monthNum + "");
+            accessor.putInfo(InfoType.BIRTH_MONTH, month);
+            accessor.putInfo(InfoType.BIRTH_YEAR, year + "");
+        }
+
+        String middleName = accessor.getInfo(InfoType.MIDDLE_NAME);
+        if (middleName != null && !middleName.isEmpty())
+        {
+            accessor.putInfo(InfoType.MIDDLE_INITIAL, middleName.charAt(0) + "");
+        }
+
+        if (creditCardExp != null)
+        {
+            for (int i = 0; i < MONTHS.length; i++)
+            {
+                if (MONTHS[i].equals(creditCardExp))
+                {
+                    int currentMonthNum = i + 1;
+                    accessor.putInfo(InfoType.CREDIT_CARD_EXP_MONTH_NUM, currentMonthNum + "");
+                    break;
+                }
+            }
+        }
+
     }
 
 

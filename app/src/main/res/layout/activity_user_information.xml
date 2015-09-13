@@ -110,6 +110,14 @@
         </EditText>
 
         <EditText
+            android:id="@+id/userInformationBillingUnitNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Billing Unit Number"
+            android:inputType="text">
+        </EditText>
+
+        <EditText
             android:id="@+id/userInformationBillingCity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
