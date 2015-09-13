@@ -101,7 +101,8 @@ public class FeedMeButton extends AppCompatActivity
             case R.id.mainActivityTopMenuOrderPreferences:
             {
                 Log.i(LOG_PREFIX, "Order Preferences pressed.");
-                //TODO
+                Intent intent = new Intent(self, OrderPreferences.class);
+                startActivity(intent);
                 break;
             }
             case R.id.mainActivityTopMenuDeliveryAddress:
