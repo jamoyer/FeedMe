@@ -5,21 +5,261 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="wrap_content"
 android:layout_height="wrap_content"
 android:scrollbars="vertical"
-tools:context="rainmanproductions.feedme.OrderPreferences">
+tools:context="rainmanproductions.feedme.userinformation.OrderPreferences">
 
-<LinearLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
-<!--TODO: Checkboxes and radio buttons-->
-    <EditText
-        android:id="@+id/stubFieldOrderPreferences"
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+        <!--UI Preferences-->
+        <EditText
+            android:id="@+id/preferenceCostPerPerson"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Cost Per Person"
+            android:inputType="text">
+        </EditText>
+
+        <TextView
+            android:id="@+id/preferenceUI"
+            android:layout_width="1643dp"
+            android:layout_height="wrap_content"
+            android:text="User Interface"
+            android:textSize="10pt">
+        </TextView>
+        <CheckBox android:id="@+id/preferenceConfirmOrders"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Orders" />
+        <CheckBox android:id="@+id/preferenceDisplayBrowser"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Display Browser" />
+        <CheckBox android:id="@+id/preferenceAlertSound"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Alert Sound" />
+
+        <!--Excluded Restaurants-->
+        <TextView
+            android:id="@+id/preferenceExcludedRestaurants"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluded Restaurants"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+        <CheckBox android:id="@+id/preferenceJimmyJohns"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Jimmy Johns" />
+        <CheckBox android:id="@+id/preferencePapaJohns"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Papa Johns" />
+        <CheckBox android:id="@+id/preferenceDominos"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Dominos" />
+        <CheckBox android:id="@+id/preference888Chinese"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="888 Chinese" />
+
+        <!--List Excluded Meats-->
+        <TextView
+            android:id="@+id/preferenceExcludedMeats"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluded Meats"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+        <CheckBox android:id="@+id/preferencePepperoni"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Pepperoni" />
+        <CheckBox android:id="@+id/preferenceGrilledChicken"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="GrilledChicken" />
+        <CheckBox android:id="@+id/preferenceBeef"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Beef" />
+        <CheckBox android:id="@+id/preferenceSpicyItalianSausage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Spicy Italian Sausage" />
+        <CheckBox android:id="@+id/preferenceBacon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Bacon" />
+        <CheckBox android:id="@+id/preferenceSausage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sausage" />
+        <CheckBox android:id="@+id/preferenceCanadianBacon"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Canadian Bacon" />
+        <CheckBox android:id="@+id/preferenceAnchovies"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Anchovies" />
+
+        <!--List Excluded Veggies-->
+        <TextView
+            android:id="@+id/preferenceExcludedVeggies"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluded Veggies"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+        <CheckBox android:id="@+id/preferencePineapple"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Pineapple" />
+        <CheckBox android:id="@+id/preferenceRomaTomatoes"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Roma Tomatoes" />
+        <CheckBox android:id="@+id/preferenceGreenOlives"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Green Olives" />
+        <CheckBox android:id="@+id/preferenceMushrooms"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Mushrooms" />
+        <CheckBox android:id="@+id/preferenceSauerkraut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sauerkraut" />
+        <CheckBox android:id="@+id/preferenceOnions"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Onions" />
+        <CheckBox android:id="@+id/preferenceBlackOlives"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Black Olives" />
+        <CheckBox android:id="@+id/preferenceJalapenoPeppers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Jalapeno Peppers" />
+
+        <!--List Excluded Cheeses-->
+        <TextView
+            android:id="@+id/preferenceExcludedCheeses"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluded Cheeses"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+        <CheckBox android:id="@+id/preferenceExtraCheese"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Extra Cheese" />
+        <CheckBox android:id="@+id/preferenceThreeCheeseBlend"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Three Cheese Blend" />
+        <CheckBox android:id="@+id/preferenceParmesan"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Parmesan" />
+
+        <!--List Pizza Preferences-->
+        <TextView
+            android:id="@+id/preferencePizzaStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Excluded Pizza Options"
+            android:textSize="10pt"
+            android:layout_weight="1.67">
+        </TextView>
+        <CheckBox android:id="@+id/preferenceOriginalCrust"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Original Crust" />
+        <CheckBox android:id="@+id/preferenceThinCrust"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Thin Crust" />
+        <CheckBox android:id="@+id/preferenceNormalCut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal Cut" />
+        <CheckBox android:id="@+id/preferenceSquareCut"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Square Cut" />
+        <CheckBox android:id="@+id/preferenceNormalBake"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal Bake" />
+        <CheckBox android:id="@+id/preferenceWellDoneBake"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Well Done Bake" />
+        <CheckBox android:id="@+id/preferenceOriginalSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Original Sauce" />
+        <CheckBox android:id="@+id/preferenceBBQSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="BBQ Sauce" />
+        <CheckBox android:id="@+id/preferenceRanchSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Ranch Sauce" />
+        <CheckBox android:id="@+id/preferenceNormalSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal Sauce" />
+        <CheckBox android:id="@+id/preferenceLightSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Light Sauce" />
+        <CheckBox android:id="@+id/preferenceExtraSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Extra Sauce" />
+        <CheckBox android:id="@+id/preferenceNoSauce"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="No Sauce" />
+        <CheckBox android:id="@+id/preferenceNormalCheese"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Normal Cheese" />
+        <CheckBox android:id="@+id/preferenceLightCheese"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Light Cheese" />
+        <CheckBox android:id="@+id/preferenceNoCheese"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="No Cheese" />
+
+    <!--Buttons to change many preferences-->
+    <Button
+        android:id="@+id/preferenceDefault"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Delivery Street Address"
-        android:inputType="text">
-    </EditText>
+        android:text="Default"
+        android:onClick="resetDefaultPreferences"/>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/preferenceClear"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Clear"
+        android:onClick="clearPreferences"/>
+    </LinearLayout>
 </ScrollView>

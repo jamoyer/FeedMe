@@ -38,7 +38,7 @@
             android:label="Delivery Address" >
         </activity>
         <activity
-            android:name=".OrderPreferences"
+            android:name=".userinformation.OrderPreferences"
             android:label="@string/title_activity_order_preferences" >
         </activity>
     </application>
