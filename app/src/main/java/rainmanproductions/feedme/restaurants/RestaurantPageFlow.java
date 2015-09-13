@@ -3,10 +3,16 @@ package rainmanproductions.feedme.restaurants;
 /**
  * Created by Matt C on 9/10/2015.
  */
-public interface RestaurantPageFlow {
+public interface RestaurantPageFlow
+{
 
     RestaurantPageFlow getPageFromURL(String url);
+
     String getJsFilepath();
+
     Restaurant getRestaurantType();
+
     String getStartingURL();
+
+    String getURL();
 }

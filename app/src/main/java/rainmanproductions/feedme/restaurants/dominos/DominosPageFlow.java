@@ -21,6 +21,7 @@ public enum DominosPageFlow implements RestaurantPageFlow
         this.jsFilepath = BASE_PATH + filename;
     }
 
+    @Override
     public String getURL()
     {
         return this.url;
