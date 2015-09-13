@@ -47,7 +47,7 @@ public enum DominosPageFlow implements RestaurantPageFlow
     @Override
     public Restaurant getRestaurantType()
     {
-        return Restaurant.Dominos;
+        return Restaurant.DOMINOS;
     }
 
     private static DominosPageFlow getDominosPageFromURL(final String url)

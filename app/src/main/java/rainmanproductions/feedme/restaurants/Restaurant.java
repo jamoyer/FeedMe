@@ -5,9 +5,9 @@ import rainmanproductions.feedme.restaurants.papajohns.PapaJohnsPageFlow;
 
 public enum Restaurant
 {
-    Dominos(DominosPageFlow.ADDRESS_PAGE),
-    PapaJohns(PapaJohnsPageFlow.ADDRESS_PAGE),
-    JimmyJohns(null);
+    DOMINOS(DominosPageFlow.ADDRESS_PAGE),
+    PAPA_JOHNS(PapaJohnsPageFlow.ADDRESS_PAGE),
+    JIMMY_JOHNS(null);
 
     private final RestaurantPageFlow pageFlow;
 

@@ -21,7 +21,8 @@ public class FeedMeButton extends AppCompatActivity
 {
     private static final String LOG_PREFIX = "FeedMeButton";
     private FeedMeButton self = this;
-    private Restaurant selectedRestaurant = Restaurant.Dominos;
+    private Restaurant selectedRestaurant = Restaurant.DOMINOS;
+    private Integer partySize = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +33,32 @@ public class FeedMeButton extends AppCompatActivity
         UserInformationAccessor.init(this);
 
         createRestaurantSpinner();
+        createNumberOfPeopleSpinner();
         createOrderButton();
+    }
+
+    private void createNumberOfPeopleSpinner()
+    {
+
+        Spinner partySizeSpinner = (Spinner) findViewById(R.id.mainActivityPartySizeSpinner);
+        Integer[] partySizeOptions = {1, 2, 3, 4, 5};
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, partySizeOptions);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        partySizeSpinner.setAdapter(arrayAdapter);
+        partySizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                partySize = (Integer) parent.getItemAtPosition(position);
+                Log.i(LOG_PREFIX, "Number of people selected: " + partySize);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+            }
+        });
     }
 
     private void createRestaurantSpinner()
@@ -47,7 +73,7 @@ public class FeedMeButton extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
                 selectedRestaurant = (Restaurant) parent.getItemAtPosition(position);
-                System.out.println("Restaurant selected: " + selectedRestaurant);
+                Log.i(LOG_PREFIX, "Restaurant selected: " + selectedRestaurant);
             }
 
             @Override

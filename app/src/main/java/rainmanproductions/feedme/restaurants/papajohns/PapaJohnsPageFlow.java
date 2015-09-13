@@ -52,7 +52,7 @@ public enum PapaJohnsPageFlow implements RestaurantPageFlow{
     @Override
     public Restaurant getRestaurantType()
     {
-        return Restaurant.PapaJohns;
+        return Restaurant.PAPA_JOHNS;
     }
 
     public static PapaJohnsPageFlow getPapaJohnsPageFromURL(final String url)
