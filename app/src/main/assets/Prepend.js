@@ -7,9 +7,19 @@ function functionName(fun)
     ret = ret.substr(0, ret.indexOf('('));
     return ret;
 }
+var DEFAULT_RETRIES = 10;
+var DEFAULT_SLEEP_TIME = 1000;
 /* Attempts the function "func" "retries" number of times, waiting "sleepTime" ms between each try. */
 function attemptFunc(func, sleepTime, retries)
 {
+    if(typeof retries === "undefined")
+    {
+        retries = DEFAULT_RETRIES;
+    }
+    if(typeof sleepTime === "undefined")
+    {
+        sleepTime = DEFAULT_SLEEP_TIME;
+    }
     if (0 >= retries--)
     {
         return;
