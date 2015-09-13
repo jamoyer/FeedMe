@@ -27,6 +27,23 @@ public class UserInformationActivity extends AppCompatActivity
 {
     private static final String[] MONTHS = new DateFormatSymbols().getMonths();
     private static final String LOG_PREFIX = UserInformationActivity.class.getSimpleName();
+    private static final InfoType[] INFO_TYPES =
+            {
+                    InfoType.FIRST_NAME,
+                    InfoType.MIDDLE_NAME,
+                    InfoType.LAST_NAME,
+                    InfoType.EMAIL,
+                    InfoType.PHONE_NUMBER,
+                    InfoType.CREDIT_CARD_NUMBER,
+                    InfoType.CREDIT_CARD_CSV_NUMBER,
+                    InfoType.CREDIT_CARD_EXP_YEAR,
+                    InfoType.BILLING_STREET_ADDRESS,
+                    InfoType.BILLING_UNIT_NUMBER,
+                    InfoType.BILLING_ZIP_CODE,
+                    InfoType.BILLING_CITY,
+                    InfoType.BILLING_STATE,
+                    InfoType.BILLING_COUNTRY
+            };
     private static Calendar birthday;
     private String creditCardExp;
     //TODO: Credit card numbers with stars
@@ -40,6 +57,7 @@ public class UserInformationActivity extends AppCompatActivity
 
         fillFields();
         createMonthSpinner();
+
     }
 
     private void createMonthSpinner()
@@ -87,7 +105,7 @@ public class UserInformationActivity extends AppCompatActivity
         /*
          * Sets all info types that have a form id
          */
-        for (InfoType infoType : InfoType.values())
+        for (InfoType infoType : INFO_TYPES)
         {
             // unimplemented fields or special fields will be null
             if (infoType.getFormId() != null)
@@ -125,7 +143,7 @@ public class UserInformationActivity extends AppCompatActivity
     private void saveFields()
     {
         UserInformationAccessor accessor = UserInformationAccessor.getInstance();
-        for (InfoType infoType : InfoType.values())
+        for (InfoType infoType : INFO_TYPES)
         {
             // unimplemented fields or special fields will be null
             if (infoType.getFormId() != null)

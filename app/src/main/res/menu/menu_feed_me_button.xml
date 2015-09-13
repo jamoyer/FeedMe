@@ -9,4 +9,8 @@
         android:id="@+id/mainActivityTopMenuUserInformation"
         android:title="User Information"
         />
+    <item
+        android:id="@+id/mainActivityTopMenuDeliveryAddress"
+        android:title="Delivery Address"
+        />
 </menu>

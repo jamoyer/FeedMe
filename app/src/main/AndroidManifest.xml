@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="rainmanproductions.feedme"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="rainmanproductions.feedme"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -33,6 +32,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rainmanproductions.feedme.FeedMeButton"/>
+        </activity>
+        <activity
+            android:name=".userinformation.DeliveryAddress"
+            android:label="Delivery Address">
         </activity>
     </application>
 
