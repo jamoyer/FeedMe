@@ -32,6 +32,5 @@ function fillPapaJohnForum(){
     var finalTip = (costInt*tipPercentage).toFixed(2);
     document.getElementById('tip-amount').value = finalTip;
     document.getElementById('validate-order').click();
-
 }
 fillPapaJohnForum();

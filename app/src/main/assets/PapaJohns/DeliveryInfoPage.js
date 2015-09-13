@@ -23,4 +23,5 @@ function clickDeliver()
 {
     document.evaluate( '/html/body/div/main/div[2]/div/div[1]/div/article[1]/div[4]/form[1]/button' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.click();
 }
+
 fillDeliveryInfo();
