@@ -30,6 +30,7 @@ public class UserInformationActivity extends AppCompatActivity
     private static Calendar birthday;
     private String creditCardExp;
     //TODO: Credit card numbers with stars
+    //TODO: Get phone number from phone
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
