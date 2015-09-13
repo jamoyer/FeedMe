@@ -76,6 +76,9 @@ public class DeliveryAddress extends AppCompatActivity
                 field.setText(saved);
             }
         }
+        String state = accessor.getInfo(InfoType.DELIVERY_STATE);
+        String code = StateCodes.getCode(state);
+        accessor.putInfo(InfoType.DELIVERY_STATE_CODE, code);
     }
 
     /**

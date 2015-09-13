@@ -97,6 +97,10 @@ public class DeliveryAddressDialog extends Dialog
                 accessor.putInfo(infoType, text);
             }
         }
+
+        String state = accessor.getInfo(InfoType.DELIVERY_STATE);
+        String code = StateCodes.getCode(state);
+        accessor.putInfo(InfoType.DELIVERY_STATE_CODE, code);
     }
 
     private boolean checkAllFieldsNonNull()

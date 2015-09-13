@@ -186,6 +186,10 @@ public class UserInformationActivity extends AppCompatActivity
             }
         }
 
+        String state = accessor.getInfo(InfoType.BILLING_STATE);
+        String code = StateCodes.getCode(state);
+        accessor.putInfo(InfoType.BILLING_STATE_CODE, code);
+
     }
 
 

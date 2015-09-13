@@ -23,12 +23,14 @@ public enum InfoType
     DELIVERY_ZIP_CODE(R.id.deliveryZipCode),
     DELIVERY_CITY(R.id.deliveryCity),
     DELIVERY_STATE(R.id.deliveryState),
+    DELIVERY_STATE_CODE(null),
     DELIVERY_COUNTRY(R.id.deliveryCountry),
     BILLING_STREET_ADDRESS(R.id.userInformationBillingStreetAddress),
     BILLING_UNIT_NUMBER(R.id.userInformationBillingUnitNumber),
     BILLING_ZIP_CODE(R.id.userInformationBillingZipCode),
     BILLING_CITY(R.id.userInformationBillingCity),
     BILLING_STATE(R.id.userInformationBillingState),
+    BILLING_STATE_CODE(null),
     BILLING_COUNTRY(R.id.userInformationBillingCountry),
     PREFERENCE_COST_PER_PERSON(R.id.preferenceCostPerPerson),
     PREFERENCE_CONFIRM_ORDERS(R.id.preferenceConfirmOrders),
@@ -72,8 +74,7 @@ public enum InfoType
     PREFERENCE_NO_SAUCE(R.id.preferenceNoSauce),
     PREFERENCE_NORMAL_CHEESE(R.id.preferenceNormalCheese),
     PREFERENCE_LIGHT_CHEESE(R.id.preferenceLightCheese),
-    PREFERENCE_NO_CHEESE(R.id.preferenceNoCheese)
-    ;
+    PREFERENCE_NO_CHEESE(R.id.preferenceNoCheese);
 
     // null formId implies special work must be done
     private final Integer formId;
