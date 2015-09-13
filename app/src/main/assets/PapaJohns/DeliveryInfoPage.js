@@ -1,17 +1,20 @@
 function fillDeliveryInfo()
 {
-    document.getElementById('locations-streetaddress').value = "150 Campus Ave";
+    document.getElementById('locations-streetaddress').value = "DELIVERY_STREET_ADDRESS";
     var addressSelect = document.getElementById('locations-aptstefloor');
-    for (var i=0; i<addressSelect.options.length; i++) {
-        if (addressSelect.options[i].value === 'APT') {
-            addressSelect.selectedIndex = i;
-            break;
+    if(DELIVERY_UNIT_NUMBER != null)
+    {
+        for (var i=0; i<addressSelect.options.length; i++) {
+            if (addressSelect.options[i].value === 'APT') {
+                addressSelect.selectedIndex = i;
+                break;
+            }
         }
+        document.getElementById('locations-aptstefloornumber').removeAttribute("disabled");
+        document.getElementById('locations-aptstefloornumber').value = "DELIVERY_UNIT_NUMBER";
     }
 
-    document.getElementById('locations-aptstefloornumber').removeAttribute("disabled");
-    document.getElementById('locations-aptstefloornumber').value = "22";
-    document.getElementById('locations-zipcode').value = "50014-2836";
+    document.getElementById('locations-zipcode').value = "DELIVERY_ZIP_CODE";
     document.evaluate( '/html/body/div/main/div[2]/div/div[2]/form/fieldset/input' ,document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null ).singleNodeValue.click();
     setTimeout(clickDeliver, 1000);
 }

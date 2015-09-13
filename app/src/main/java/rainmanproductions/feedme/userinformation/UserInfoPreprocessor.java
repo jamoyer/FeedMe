@@ -36,7 +36,11 @@ public class UserInfoPreprocessor
                 {
                     returnedInfo = retrieveInfo(infoType);
                 }
-                output = output.replaceAll(infoType.toString(), returnedInfo);
+                else
+                {
+                    output = output.replaceAll(infoType.toString(), returnedInfo);
+                }
+
             }
         }
 

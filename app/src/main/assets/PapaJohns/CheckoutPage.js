@@ -1,13 +1,13 @@
 var tipPercentage = .2;
 function fillPapaJohnForum(){
-    document.getElementById('contact-firstname').value = "Puff";
-    document.getElementById('contact-lastname').value = "Daddy";
-    document.getElementById('contact-email').value = "pdiddy@gmail.com";
-    document.getElementById('phone-number').value = "5553537651";
+    document.getElementById('contact-firstname').value = "FIRST_NAME";
+    document.getElementById('contact-lastname').value = "LAST_NAME";
+    document.getElementById('contact-email').value = "EMAIL";
+    document.getElementById('phone-number').value = "PHONE_NUMBER";
     document.getElementById('create-account-emailoffers').checked = false;
-    document.getElementById('credit-card-number').value = "1111111111111111";
-    document.getElementById('credit-card-cvv').value = "111";
-    document.getElementById('credit-card-name').value = "Puff Daddy";
+    document.getElementById('credit-card-number').value = "CREDIT_CARD_NUMBER";
+    document.getElementById('credit-card-cvv').value = "CREDIT_CARD_CSV_NUMBER";
+    document.getElementById('credit-card-name').value = "FIRST_NAME " + "LAST_NAME";
 
     var addressSelect = document.getElementById('credit-card-expiration-month');
     for (var i=0; i<addressSelect.options.length; i++) {
