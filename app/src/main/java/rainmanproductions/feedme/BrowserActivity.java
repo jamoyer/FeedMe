@@ -2,6 +2,7 @@ package rainmanproductions.feedme;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
@@ -19,6 +20,7 @@ public class BrowserActivity extends Activity
         System.out.println("Entering BrowserActivity onCreate()");
 
         WebView webview = new WebView(this);
+        //webview.setVisibility(View.GONE);
         AssetReader.setAssetManager(this);
         setContentView(webview);
         webview.getSettings().setJavaScriptEnabled(true);
