@@ -1,4 +1,4 @@
-package rainmanproductions.feedme;
+package rainmanproductions.feedme.util;
 
 
 import android.content.Context;
@@ -8,7 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class AssetReader
+public class FileReader
 {
     private static final String PREPEND_JS_FILENAME = "Prepend.js";
     private static String prependJs = null;
@@ -29,9 +29,9 @@ public class AssetReader
     /**
      * Reads a JavaScript file and prepends the text from Prepend.js and appends the text from Append.js to it.
      *
-     * @param filename
-     * @return
-     * @throws IOException
+     * @param filename Name of file under /assets to be read.
+     * @return The string containing the text of the read file added with the prepend and append js files.
+     * @throws IOException If anything goes wrong with reading the file.
      */
     public static String readJsFile(final String filename) throws IOException
     {
@@ -51,9 +51,9 @@ public class AssetReader
     /**
      * Reads a text file from the assets folder.
      *
-     * @param filename
-     * @return
-     * @throws IOException
+     * @param filename Name of file under /assets to be read.
+     * @return The string containing the text of the read file.
+     * @throws IOException If anything goes wrong with reading the file.
      */
     public static String readTextAsset(final String filename) throws IOException
     {

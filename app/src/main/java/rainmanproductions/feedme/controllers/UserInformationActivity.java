@@ -1,4 +1,4 @@
-package rainmanproductions.feedme.userinformation;
+package rainmanproductions.feedme.controllers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -22,6 +22,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.userinformation.StateCodes;
+import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
 public class UserInformationActivity extends AppCompatActivity
 {

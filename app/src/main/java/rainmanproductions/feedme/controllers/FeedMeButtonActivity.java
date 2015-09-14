@@ -1,4 +1,4 @@
-package rainmanproductions.feedme;
+package rainmanproductions.feedme.controllers;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -13,18 +13,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
-import rainmanproductions.feedme.userinformation.DeliveryAddress;
-import rainmanproductions.feedme.userinformation.OrderPreferencesActivity;
-import rainmanproductions.feedme.userinformation.DeliveryAddressDialog;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
-import rainmanproductions.feedme.userinformation.UserInformationActivity;
 
-public class FeedMeButton extends AppCompatActivity
+public class FeedMeButtonActivity extends AppCompatActivity
 {
-    private static final String LOG_PREFIX = "FeedMeButton";
-    private final FeedMeButton self = this;
+    private static final String LOG_PREFIX = "FeedMeButtonActivity";
+    private final FeedMeButtonActivity self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
     private Integer partySize = 1;
 
@@ -152,7 +149,7 @@ public class FeedMeButton extends AppCompatActivity
             case R.id.mainActivityTopMenuDeliveryAddress:
             {
                 Log.i(LOG_PREFIX, "Delivery Address pressed.");
-                cls = DeliveryAddress.class;
+                cls = DeliveryAddressActivity.class;
                 break;
             }
         }

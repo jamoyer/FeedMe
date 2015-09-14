@@ -1,4 +1,4 @@
-package rainmanproductions.feedme.userinformation;
+package rainmanproductions.feedme.controllers;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,8 +7,11 @@ import android.view.MenuItem;
 import android.widget.EditText;
 
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.userinformation.StateCodes;
+import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
-public class DeliveryAddress extends AppCompatActivity
+public class DeliveryAddressActivity extends AppCompatActivity
 {
 
     private static final InfoType[] INFO_TYPES =

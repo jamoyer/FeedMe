@@ -1,4 +1,4 @@
-package rainmanproductions.feedme.userinformation;
+package rainmanproductions.feedme.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
 public class OrderPreferencesActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package rainmanproductions.feedme.userinformation;
+package rainmanproductions.feedme.controllers;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import rainmanproductions.feedme.FeedMeButton;
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.userinformation.InfoType;
+import rainmanproductions.feedme.userinformation.StateCodes;
+import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
 public class DeliveryAddressDialog extends Dialog
 {
@@ -23,12 +25,12 @@ public class DeliveryAddressDialog extends Dialog
                     InfoType.DELIVERY_ZIP_CODE
             };
 
-    private final FeedMeButton parent;
+    private final FeedMeButtonActivity parent;
 
     public DeliveryAddressDialog(final Context context)
     {
         super(context);
-        this.parent = (FeedMeButton) context;
+        this.parent = (FeedMeButtonActivity) context;
         setContentView(R.layout.activity_delivery_address);
 
         suggestLocation();
