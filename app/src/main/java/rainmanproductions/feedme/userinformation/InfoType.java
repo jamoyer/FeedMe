@@ -2,8 +2,9 @@ package rainmanproductions.feedme.userinformation;
 
 import rainmanproductions.feedme.R;
 
-public enum InfoType
+public enum InfoType implements  AccessorKeyType
 {
+    //TODO: Refactor and break apart
     FIRST_NAME(R.id.userInformationFirstName),
     MIDDLE_NAME(R.id.userInformationMiddleName),
     MIDDLE_INITIAL(null), // can be taken as first letter of middle name

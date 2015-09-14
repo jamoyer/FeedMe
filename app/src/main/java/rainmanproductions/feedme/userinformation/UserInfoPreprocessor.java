@@ -1,15 +1,12 @@
 package rainmanproductions.feedme.userinformation;
 
-import rainmanproductions.feedme.userinformation.InfoType;
-import rainmanproductions.feedme.userinformation.UserInformationAccessor;
-
 public class UserInfoPreprocessor
 {
     /**
      * Parses the input string and replaces all instances of InfoType strings and replaces them with
      * information from the App Preferences.
      *
-     * @param input
+     * @param input A string that is to be processed.
      * @return A new String where all InfoTypes are replaced with real information.
      */
     public static String process(final String input)
@@ -34,23 +31,11 @@ public class UserInfoPreprocessor
                 // retrieve information if necessary
                 if (returnedInfo == null)
                 {
-                    returnedInfo = retrieveInfo(infoType);
+                    returnedInfo = "";
                 }
-                else
-                {
-                    output = output.replaceAll(infoType.toString(), returnedInfo);
-                }
-
+                output = output.replaceAll(infoType.toString(), returnedInfo);
             }
         }
-
         return output;
     }
-
-    private static String retrieveInfo(final InfoType infoType)
-    {
-        //todo
-        return null;
-    }
-
 }

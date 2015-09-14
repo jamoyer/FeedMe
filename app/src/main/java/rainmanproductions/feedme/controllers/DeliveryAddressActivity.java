@@ -14,6 +14,9 @@ import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 public class DeliveryAddressActivity extends AppCompatActivity
 {
 
+    /*
+     *TODO: change into an activity that shows all stored addresses.
+     */
     private static final InfoType[] INFO_TYPES =
             {
                     InfoType.DELIVERY_STREET_ADDRESS,

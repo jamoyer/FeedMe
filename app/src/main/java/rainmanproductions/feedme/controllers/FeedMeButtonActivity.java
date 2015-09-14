@@ -13,7 +13,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import java.io.IOException;
+
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.gps.GPSAccessor;
+import rainmanproductions.feedme.gps.GPSLatLong;
 import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -32,6 +36,9 @@ public class FeedMeButtonActivity extends AppCompatActivity
         setContentView(R.layout.activity_feed_me_button);
 
         UserInformationAccessor.init(this);
+        GPSAccessor.initGPSAcessor(this);
+        GPSAccessor accessor = GPSAccessor.getInstance();
+        accessor.startGettingLocation();
 
         createRestaurantSpinner();
         createNumberOfPeopleSpinner();
@@ -110,7 +117,16 @@ public class FeedMeButtonActivity extends AppCompatActivity
             {
                 Log.i(LOG_PREFIX, "Random order button pressed.");
                 selectedRestaurant = FoodPicker.getUniformRandomRestaurant();
-                doOrder();
+                //doOrder();
+                GPSLatLong latLong = GPSAccessor.getInstance().getLastLocation();
+                try
+                {
+                    GPSAccessor.getInstance().getAddress(latLong.getLatitude(), latLong.getLongitude());
+                }
+                catch (IOException e)
+                {
+                    Log.e(LOG_PREFIX, "Error with GPS");
+                }
             }
         });
     }

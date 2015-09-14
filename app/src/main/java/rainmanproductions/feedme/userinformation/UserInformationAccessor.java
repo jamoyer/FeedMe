@@ -35,19 +35,29 @@ public class UserInformationAccessor
         return instance;
     }
 
-    public String getInfo(final InfoType type)
+    public String getInfo(final AccessorKeyType type)
     {
-        String stored = accessPoint.getString(type.toString(), null);
-        Log.i(LOG_TAG, "Got data: " + stored + " for " + type.name());
+        return getInfo(type.toString());
+    }
+
+    public void putInfo(final AccessorKeyType type, final String info)
+    {
+       putInfo(type.toString(), info);
+    }
+
+    public String getInfo(final String type)
+    {
+        String stored = accessPoint.getString(type, null);
+        Log.i(LOG_TAG, "Got data: " + stored + " for " + type);
         return stored;
     }
 
-    public void putInfo(final InfoType type, final String info)
+    public void putInfo(final String type, final String info)
     {
         accessPoint.edit()
-                   .remove(type.name())
-                   .putString(type.name(), info)
-                   .apply();
-        Log.i(LOG_TAG, "Put data: " + info + " for " + type.name());
+                .remove(type)
+                .putString(type, info)
+                .apply();
+        Log.i(LOG_TAG, "Put data: " + info + " for " + type);
     }
 }

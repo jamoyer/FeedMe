@@ -7,7 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.IOException;
+
 import rainmanproductions.feedme.R;
+import rainmanproductions.feedme.gps.AddressInfo;
+import rainmanproductions.feedme.gps.GPSAccessor;
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.StateCodes;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -71,15 +75,24 @@ public class DeliveryAddressDialog extends Dialog
          * Sets all info types that have a form id
          */
 
-        for (InfoType infoType : INFO_TYPES)
+
+        AddressInfo addressInfo = null;
+        try
         {
-            // unimplemented fields or special fields will be null
-            if (infoType.getFormId() != null)
-            {
-                String saved = accessor.getInfo(infoType);
-                EditText field = (EditText) findViewById(infoType.getFormId());
-                field.setText(saved);
-            }
+            addressInfo = GPSAccessor.getInstance().getSuggestedAddress();
+        }
+        catch (IOException e)
+        {
+            Log.e(LOG_PREFIX, "Unable to get suggested address: " + e.getMessage());
+        }
+        if (addressInfo != null)
+        {
+            ((EditText) findViewById(InfoType.DELIVERY_STREET_ADDRESS.getFormId())).setText(addressInfo.getStreetAddress());
+            ((EditText) findViewById(InfoType.DELIVERY_UNIT_NUMBER.getFormId())).setText(addressInfo.getUnitNumber());
+            ((EditText) findViewById(InfoType.DELIVERY_ZIP_CODE.getFormId())).setText(addressInfo.getZipCode());
+            ((EditText) findViewById(InfoType.DELIVERY_CITY.getFormId())).setText(addressInfo.getCity());
+            ((EditText) findViewById(InfoType.DELIVERY_STATE_NAME.getFormId())).setText(addressInfo.getState());
+            ((EditText) findViewById(InfoType.DELIVERY_COUNTRY.getFormId())).setText(addressInfo.getCountry());
         }
     }
 
@@ -103,10 +116,19 @@ public class DeliveryAddressDialog extends Dialog
         String state = accessor.getInfo(InfoType.DELIVERY_STATE_NAME);
         String code = StateCodes.getCode(state);
         accessor.putInfo(InfoType.DELIVERY_STATE_CODE, code);
+
+        AddressInfo addressInfo = new AddressInfo();
+        addressInfo.setZipCode(accessor.getInfo(InfoType.DELIVERY_ZIP_CODE));
+        addressInfo.setCountry(accessor.getInfo(InfoType.DELIVERY_COUNTRY));
+        addressInfo.setCity(accessor.getInfo(InfoType.DELIVERY_CITY));
+        addressInfo.setUnitNumber(accessor.getInfo(InfoType.DELIVERY_UNIT_NUMBER));
+        addressInfo.setStreetAddress(accessor.getInfo(InfoType.DELIVERY_STREET_ADDRESS));
+        addressInfo.setState(accessor.getInfo(InfoType.DELIVERY_STATE_NAME));
     }
 
     private boolean checkAllFieldsNonNull()
     {
+        // TODO check all fields to be not null
         return true;
     }
 }
