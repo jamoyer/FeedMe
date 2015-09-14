@@ -67,6 +67,10 @@ public class StateCodes
 
     public static String getCode(final String state)
     {
+        if(state==null)
+        {
+            return null;
+        }
         final String key = state.toLowerCase().replaceAll(" ", "");
         return states.get(key);
     }
