@@ -41,7 +41,7 @@ public class UserInformationActivity extends AppCompatActivity
                     InfoType.BILLING_UNIT_NUMBER,
                     InfoType.BILLING_ZIP_CODE,
                     InfoType.BILLING_CITY,
-                    InfoType.BILLING_STATE,
+                    InfoType.BILLING_STATE_NAME,
                     InfoType.BILLING_COUNTRY
             };
     private static Calendar birthday;
@@ -186,7 +186,7 @@ public class UserInformationActivity extends AppCompatActivity
             }
         }
 
-        String state = accessor.getInfo(InfoType.BILLING_STATE);
+        String state = accessor.getInfo(InfoType.BILLING_STATE_NAME);
         String code = StateCodes.getCode(state);
         accessor.putInfo(InfoType.BILLING_STATE_CODE, code);
 

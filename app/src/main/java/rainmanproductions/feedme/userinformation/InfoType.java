@@ -29,7 +29,7 @@ public enum InfoType
     BILLING_UNIT_NUMBER(R.id.userInformationBillingUnitNumber),
     BILLING_ZIP_CODE(R.id.userInformationBillingZipCode),
     BILLING_CITY(R.id.userInformationBillingCity),
-    BILLING_STATE(R.id.userInformationBillingState),
+    BILLING_STATE_NAME(R.id.userInformationBillingState),
     BILLING_STATE_CODE(null),
     BILLING_COUNTRY(R.id.userInformationBillingCountry),
     PREFERENCE_COST_PER_PERSON(R.id.preferenceCostPerPerson),
