@@ -16,7 +16,7 @@ import android.widget.Spinner;
 import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.DeliveryAddress;
-import rainmanproductions.feedme.userinformation.OrderPreferences;
+import rainmanproductions.feedme.userinformation.OrderPreferencesActivity;
 import rainmanproductions.feedme.userinformation.DeliveryAddressDialog;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 import rainmanproductions.feedme.userinformation.UserInformationActivity;
@@ -40,7 +40,7 @@ public class FeedMeButton extends AppCompatActivity
         createNumberOfPeopleSpinner();
         createOrderButton();
         createRandomOrderButton();
-        OrderPreferences.setDefaultPreferencesIfNull();
+        OrderPreferencesActivity.setDefaultPreferencesIfNull();
     }
 
     private void createNumberOfPeopleSpinner()
@@ -146,7 +146,7 @@ public class FeedMeButton extends AppCompatActivity
             case R.id.mainActivityTopMenuOrderPreferences:
             {
                 Log.i(LOG_PREFIX, "Order Preferences pressed.");
-                cls = OrderPreferences.class;
+                cls = OrderPreferencesActivity.class;
                 break;
             }
             case R.id.mainActivityTopMenuDeliveryAddress:

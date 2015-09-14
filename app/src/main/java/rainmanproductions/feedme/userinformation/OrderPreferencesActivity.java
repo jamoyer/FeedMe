@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import rainmanproductions.feedme.R;
 
-public class OrderPreferences extends AppCompatActivity {
+public class OrderPreferencesActivity extends AppCompatActivity {
 
     private static final InfoType[] INFO_TYPES =
             {
