@@ -82,6 +82,17 @@ public class OrderPreferencesActivity extends AppCompatActivity {
                 accessor.putInfo(default_checked, "true");
             }
         }
+        for(InfoType checkbox : CHECK_BOXES)
+        {
+            if (accessor.getInfo(checkbox) == null)
+            {
+                accessor.putInfo(checkbox, "false");
+            }
+        }
+        if (accessor.getInfo(InfoType.PREFERENCE_COST_PER_PERSON) == null)
+        {
+            accessor.putInfo(InfoType.PREFERENCE_COST_PER_PERSON, "15.00");
+        }
     }
 
     public void resetDefaultPreferences(View view)
@@ -90,6 +101,10 @@ public class OrderPreferencesActivity extends AppCompatActivity {
         for(InfoType checked : CHECK_BOXES)
         {
             accessor.putInfo(checked, null);
+        }
+        for(InfoType infoType: INFO_TYPES)
+        {
+            accessor.putInfo(infoType, null);
         }
         setDefaultPreferencesIfNull();
         fillFields();
