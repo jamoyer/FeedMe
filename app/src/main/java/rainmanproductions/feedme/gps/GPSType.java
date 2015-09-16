@@ -1,5 +1,7 @@
-package rainmanproductions.feedme.userinformation;
+package rainmanproductions.feedme.gps;
 
+
+import rainmanproductions.feedme.userinformation.AccessorKeyType;
 
 public enum GPSType implements AccessorKeyType
 {

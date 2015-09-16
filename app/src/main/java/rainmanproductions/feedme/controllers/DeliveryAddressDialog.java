@@ -2,16 +2,15 @@ package rainmanproductions.feedme.controllers;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.io.IOException;
-
 import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.gps.AddressInfo;
-import rainmanproductions.feedme.gps.GPSAccessor;
+import rainmanproductions.feedme.gps.GPSHandler;
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.StateCodes;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -19,7 +18,7 @@ import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 public class DeliveryAddressDialog extends Dialog
 {
     private static final String LOG_PREFIX = "DeliveryAddressDialog";
-    private static final InfoType[] INFO_TYPES =
+    private static final InfoType[] DELIVERY_ADDRESS_TYPES =
             {
                     InfoType.DELIVERY_STREET_ADDRESS,
                     InfoType.DELIVERY_UNIT_NUMBER,
@@ -37,7 +36,7 @@ public class DeliveryAddressDialog extends Dialog
         this.parent = (FeedMeButtonActivity) context;
         setContentView(R.layout.activity_delivery_address);
 
-        suggestLocation();
+        fillFields();
         createConfirmationButton();
     }
 
@@ -67,33 +66,15 @@ public class DeliveryAddressDialog extends Dialog
     /**
      * Fills all the fields on the form with information that is already stored.
      */
-    private void suggestLocation()
+    private void fillFields()
     {
-        UserInformationAccessor accessor = UserInformationAccessor.getInstance();
-
-        /*
-         * Sets all info types that have a form id
-         */
-
-
-        AddressInfo addressInfo = null;
-        try
-        {
-            addressInfo = GPSAccessor.getInstance().getSuggestedAddress();
-        }
-        catch (IOException e)
-        {
-            Log.e(LOG_PREFIX, "Unable to get suggested address: " + e.getMessage());
-        }
-        if (addressInfo != null)
-        {
-            ((EditText) findViewById(InfoType.DELIVERY_STREET_ADDRESS.getFormId())).setText(addressInfo.getStreetAddress());
-            ((EditText) findViewById(InfoType.DELIVERY_UNIT_NUMBER.getFormId())).setText(addressInfo.getUnitNumber());
-            ((EditText) findViewById(InfoType.DELIVERY_ZIP_CODE.getFormId())).setText(addressInfo.getZipCode());
-            ((EditText) findViewById(InfoType.DELIVERY_CITY.getFormId())).setText(addressInfo.getCity());
-            ((EditText) findViewById(InfoType.DELIVERY_STATE_NAME.getFormId())).setText(addressInfo.getState());
-            ((EditText) findViewById(InfoType.DELIVERY_COUNTRY.getFormId())).setText(addressInfo.getCountry());
-        }
+        AddressInfo addressInfo = GPSHandler.getInstance().getAddress();
+        setText(InfoType.DELIVERY_STREET_ADDRESS, addressInfo.getStreetAddress());
+        setText(InfoType.DELIVERY_UNIT_NUMBER, addressInfo.getUnitNumber());
+        setText(InfoType.DELIVERY_ZIP_CODE, addressInfo.getZipCode());
+        setText(InfoType.DELIVERY_CITY, addressInfo.getCity());
+        setText(InfoType.DELIVERY_STATE_NAME, addressInfo.getStateName());
+        setText(InfoType.DELIVERY_COUNTRY, addressInfo.getCountry());
     }
 
     /**
@@ -101,21 +82,20 @@ public class DeliveryAddressDialog extends Dialog
      */
     private void saveFields()
     {
+        // save address to store for javascript access
         UserInformationAccessor accessor = UserInformationAccessor.getInstance();
-        for (InfoType infoType : INFO_TYPES)
+        for (InfoType infoType : DELIVERY_ADDRESS_TYPES)
         {
             // unimplemented fields or special fields will be null
             if (infoType.getFormId() != null)
             {
-                EditText field = (EditText) findViewById(infoType.getFormId());
-                String text = field.getText().toString();
-                accessor.putInfo(infoType, text);
+                accessor.putInfo(infoType, getText(infoType));
             }
         }
 
-        String state = accessor.getInfo(InfoType.DELIVERY_STATE_NAME);
-        String code = StateCodes.getCode(state);
-        accessor.putInfo(InfoType.DELIVERY_STATE_CODE, code);
+        String stateName = accessor.getInfo(InfoType.DELIVERY_STATE_NAME);
+        String stateCode = StateCodes.getCode(stateName);
+        accessor.putInfo(InfoType.DELIVERY_STATE_CODE, stateCode);
 
         AddressInfo addressInfo = new AddressInfo();
         addressInfo.setZipCode(accessor.getInfo(InfoType.DELIVERY_ZIP_CODE));
@@ -123,12 +103,54 @@ public class DeliveryAddressDialog extends Dialog
         addressInfo.setCity(accessor.getInfo(InfoType.DELIVERY_CITY));
         addressInfo.setUnitNumber(accessor.getInfo(InfoType.DELIVERY_UNIT_NUMBER));
         addressInfo.setStreetAddress(accessor.getInfo(InfoType.DELIVERY_STREET_ADDRESS));
-        addressInfo.setState(accessor.getInfo(InfoType.DELIVERY_STATE_NAME));
+        addressInfo.setStateName(accessor.getInfo(InfoType.DELIVERY_STATE_NAME));
+        addressInfo.setStateCode(stateCode);
+
+        // save address for gps purposes
+        GPSHandler.getInstance().saveAddress(addressInfo);
     }
 
+    /**
+     * Checks if all the important fields on the dialog are set and if not it sets them red.
+     *
+     * @return
+     */
     private boolean checkAllFieldsNonNull()
     {
-        // TODO check all fields to be not null
-        return true;
+        InfoType[] types =
+                {
+                        InfoType.DELIVERY_STREET_ADDRESS,
+                        InfoType.DELIVERY_ZIP_CODE,
+                        InfoType.DELIVERY_CITY,
+                        InfoType.DELIVERY_STATE_NAME,
+                        InfoType.DELIVERY_COUNTRY
+                };
+
+        boolean allFieldsNonNull = true;
+        for (InfoType type : types)
+        {
+            String field = getText(type);
+            if (field == null || field.isEmpty())
+            {
+                allFieldsNonNull = false;
+                setColor(type, Color.RED);
+            }
+        }
+        return allFieldsNonNull;
+    }
+
+    private void setColor(final InfoType type, final int color)
+    {
+        ((EditText) findViewById(type.getFormId())).setHintTextColor(color);
+    }
+
+    private String getText(final InfoType type)
+    {
+        return ((EditText) findViewById(type.getFormId())).getText().toString();
+    }
+
+    private void setText(final InfoType type, final String text)
+    {
+        ((EditText) findViewById(type.getFormId())).setText(text);
     }
 }

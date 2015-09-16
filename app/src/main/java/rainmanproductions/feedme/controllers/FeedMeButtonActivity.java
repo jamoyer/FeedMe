@@ -13,11 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
-import java.io.IOException;
-
 import rainmanproductions.feedme.R;
-import rainmanproductions.feedme.gps.GPSAccessor;
-import rainmanproductions.feedme.gps.GPSLatLong;
+import rainmanproductions.feedme.gps.GPSHandler;
 import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -25,6 +22,7 @@ import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 public class FeedMeButtonActivity extends AppCompatActivity
 {
     private static final String LOG_PREFIX = "FeedMeButtonActivity";
+    public static final int GET_LOCATION_WAITING_TIME_MS = 500;
     private final FeedMeButtonActivity self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
     private Integer partySize = 1;
@@ -36,9 +34,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
         setContentView(R.layout.activity_feed_me_button);
 
         UserInformationAccessor.init(this);
-        GPSAccessor.initGPSAcessor(this);
-        GPSAccessor accessor = GPSAccessor.getInstance();
-        accessor.startGettingLocation();
+        GPSHandler.init(this);
 
         createRestaurantSpinner();
         createNumberOfPeopleSpinner();
@@ -117,16 +113,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
             {
                 Log.i(LOG_PREFIX, "Random order button pressed.");
                 selectedRestaurant = FoodPicker.getUniformRandomRestaurant();
-                //doOrder();
-                GPSLatLong latLong = GPSAccessor.getInstance().getLastLocation();
-                try
-                {
-                    GPSAccessor.getInstance().getAddress(latLong.getLatitude(), latLong.getLongitude());
-                }
-                catch (IOException e)
-                {
-                    Log.e(LOG_PREFIX, "Error with GPS");
-                }
+                doOrder();
             }
         });
     }
@@ -177,6 +164,16 @@ public class FeedMeButtonActivity extends AppCompatActivity
 
     private void doOrder()
     {
+        GPSHandler.getInstance().startGettingLocation();
+        try
+        {
+            Thread.sleep(GET_LOCATION_WAITING_TIME_MS);
+        }
+        catch (InterruptedException e)
+        {
+            Log.e(LOG_PREFIX, "Interrupted while getting location: " + e.getMessage());
+        }
+        GPSHandler.getInstance().stopGettingLocation();
         Dialog confirmAddressDialog = new DeliveryAddressDialog(this);
         confirmAddressDialog.show();
     }
