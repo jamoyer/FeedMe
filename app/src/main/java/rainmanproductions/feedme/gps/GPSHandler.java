@@ -24,7 +24,6 @@ public class GPSHandler
     private final LocationListener listener;
     private final LocationManager manager;
     private final Geocoder geocoder;
-    private final Thread threadToInterruptOnLocationFound;
     private final Context context;
 
     private static GPSHandler instance = null;
@@ -36,11 +35,11 @@ public class GPSHandler
      *
      * @param context An application context or activity.
      */
-    public static void init(final Context context, final Thread threadToInterruptOnLocationFound)
+    public static void init(final Context context)
     {
         if (instance == null)
         {
-            instance = new GPSHandler(context, threadToInterruptOnLocationFound);
+            instance = new GPSHandler(context);
         }
     }
 
@@ -57,12 +56,11 @@ public class GPSHandler
      *
      * @param context The context of the initializing activity.
      */
-    private GPSHandler(final Context context, final Thread threadToInterruptOnLocationFound) throws SecurityException
+    private GPSHandler(final Context context) throws SecurityException
     {
         Log.i(LOG_PREFIX, "Initializing GPSHandler.");
         this.context = context;
         geocoder = new Geocoder(context);
-        this.threadToInterruptOnLocationFound = threadToInterruptOnLocationFound;
         this.manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         // try to initialize the location to our last known location using either gps or network
@@ -94,7 +92,6 @@ public class GPSHandler
                 if (location != null)
                 {
                     lastLocation = new GPSLatLon(location.getLatitude(), location.getLongitude());
-                    threadToInterruptOnLocationFound.interrupt();
                 }
             }
 

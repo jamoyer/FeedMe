@@ -41,7 +41,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
         try
         {
             checkAndPromptLocationEnableDialog();
-            GPSHandler.init(this, Thread.currentThread());
+            GPSHandler.init(this);
         }
         catch (SecurityException e)
         {
@@ -186,14 +186,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
             }
             catch (InterruptedException e)
             {
-                if (gpsHandler.getLocation() != null)
-                {
-                    Log.i(LOG_PREFIX, "Thread interrupted while waiting for location, maybe location was found.");
-                }
-                else
-                {
-                    Log.i(LOG_PREFIX, "Thread interrupted while waiting for location but location is null. Hey what gives?!");
-                }
+                Log.i(LOG_PREFIX, "Thread interrupted while waiting for location.");
             }
             gpsHandler.stopGettingLocation();
         }
