@@ -1,8 +1,12 @@
 package rainmanproductions.feedme.controllers;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -22,7 +26,7 @@ import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 public class FeedMeButtonActivity extends AppCompatActivity
 {
     private static final String LOG_PREFIX = "FeedMeButtonActivity";
-    public static final int GET_LOCATION_WAITING_TIME_MS = 500;
+    public static final int MAXIMUM_TIME_TO_WAIT_FOR_LOCATION = 5000; // 5 seconds
     private final FeedMeButtonActivity self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
     private Integer partySize = 1;
@@ -34,7 +38,15 @@ public class FeedMeButtonActivity extends AppCompatActivity
         setContentView(R.layout.activity_feed_me_button);
 
         UserInformationAccessor.init(this);
-        GPSHandler.init(this);
+        try
+        {
+            checkAndPromptLocationEnableDialog();
+            GPSHandler.init(this, Thread.currentThread());
+        }
+        catch (SecurityException e)
+        {
+            Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
+        }
 
         createRestaurantSpinner();
         createNumberOfPeopleSpinner();
@@ -164,16 +176,27 @@ public class FeedMeButtonActivity extends AppCompatActivity
 
     private void doOrder()
     {
-        GPSHandler.getInstance().startGettingLocation();
-        try
+        GPSHandler gpsHandler = GPSHandler.getInstance();
+        if (gpsHandler != null && GPSHandler.isAnyLocationEnabled(this))
         {
-            Thread.sleep(GET_LOCATION_WAITING_TIME_MS);
+            gpsHandler.startGettingLocation();
+            try
+            {
+                Thread.sleep(MAXIMUM_TIME_TO_WAIT_FOR_LOCATION);
+            }
+            catch (InterruptedException e)
+            {
+                if (gpsHandler.getLocation() != null)
+                {
+                    Log.i(LOG_PREFIX, "Thread interrupted while waiting for location, maybe location was found.");
+                }
+                else
+                {
+                    Log.i(LOG_PREFIX, "Thread interrupted while waiting for location but location is null. Hey what gives?!");
+                }
+            }
+            gpsHandler.stopGettingLocation();
         }
-        catch (InterruptedException e)
-        {
-            Log.e(LOG_PREFIX, "Interrupted while getting location: " + e.getMessage());
-        }
-        GPSHandler.getInstance().stopGettingLocation();
         Dialog confirmAddressDialog = new DeliveryAddressDialog(this);
         confirmAddressDialog.show();
     }
@@ -184,5 +207,35 @@ public class FeedMeButtonActivity extends AppCompatActivity
         final Intent intent = new Intent(self, BrowserActivity.class);
         intent.putExtra("restaurant", selectedRestaurant);
         startActivity(intent);
+    }
+
+    private void checkAndPromptLocationEnableDialog()
+    {
+        final Context self = this;
+        if (!GPSHandler.isAnyLocationEnabled(self))
+        {
+            Log.i(LOG_PREFIX, "Prompting user for location enabling.");
+            // notify user
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(self);
+            dialog.setMessage("Enable location so I may suggest a delivery address?");
+            dialog.setPositiveButton("YES", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt)
+                {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    self.startActivity(myIntent);
+                }
+            });
+            dialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
+            {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt)
+                {
+                }
+            });
+            dialog.show();
+        }
     }
 }

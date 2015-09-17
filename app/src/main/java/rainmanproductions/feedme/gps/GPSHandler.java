@@ -14,14 +14,18 @@ import java.util.List;
 
 import rainmanproductions.feedme.userinformation.StateCodes;
 
+/**
+ * To be the main API for looking up addresses or getting the current location.
+ */
 public class GPSHandler
 {
     private static final String LOG_PREFIX = "GPSHandler";
-    private static final int DISTANCE_THRESHOLD_METERS = 100;
 
     private final LocationListener listener;
     private final LocationManager manager;
     private final Geocoder geocoder;
+    private final Thread threadToInterruptOnLocationFound;
+    private final Context context;
 
     private static GPSHandler instance = null;
 
@@ -32,11 +36,11 @@ public class GPSHandler
      *
      * @param context An application context or activity.
      */
-    public static void init(final Context context)
+    public static void init(final Context context, final Thread threadToInterruptOnLocationFound)
     {
         if (instance == null)
         {
-            instance = new GPSHandler(context);
+            instance = new GPSHandler(context, threadToInterruptOnLocationFound);
         }
     }
 
@@ -53,21 +57,32 @@ public class GPSHandler
      *
      * @param context The context of the initializing activity.
      */
-    private GPSHandler(final Context context)
+    private GPSHandler(final Context context, final Thread threadToInterruptOnLocationFound) throws SecurityException
     {
         Log.i(LOG_PREFIX, "Initializing GPSHandler.");
+        this.context = context;
         geocoder = new Geocoder(context);
-
-        // Acquire a reference to the system Location Manager
+        this.threadToInterruptOnLocationFound = threadToInterruptOnLocationFound;
         this.manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        try
+
+        // try to initialize the location to our last known location using either gps or network
+        if (isGPSLocationEnabled(context))
+        {
+            Location lastKnownLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastKnownLocation != null)
+            {
+                Log.i(LOG_PREFIX, "Initializing location from GPS.");
+                this.lastLocation = new GPSLatLon(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            }
+        }
+        if (lastLocation == null && isNetworkLocationEnabled(context))
         {
             Location lastKnownLocation = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            this.lastLocation = new GPSLatLon(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
-        }
-        catch (SecurityException e)
-        {
-            Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
+            if (lastKnownLocation != null)
+            {
+                Log.i(LOG_PREFIX, "Initializing location from Network.");
+                this.lastLocation = new GPSLatLon(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            }
         }
 
         // Define a listener that responds to location updates
@@ -76,7 +91,11 @@ public class GPSHandler
             @Override
             public void onLocationChanged(Location location)
             {
-                lastLocation = new GPSLatLon(location.getLatitude(), location.getLongitude());
+                if (location != null)
+                {
+                    lastLocation = new GPSLatLon(location.getLatitude(), location.getLongitude());
+                    threadToInterruptOnLocationFound.interrupt();
+                }
             }
 
             @Override
@@ -96,182 +115,67 @@ public class GPSHandler
         };
     }
 
+    public GPSLatLon getLocation()
+    {
+        return lastLocation;
+    }
+
     /**
      * Begins updating location information. CAUTION : HIGH BATTERY USAGE, USE SPARINGLY!
      */
-    public void startGettingLocation()
+    public void startGettingLocation() throws SecurityException
     {
-        Log.i(LOG_PREFIX, "Starting GPS location tracking.");
-        // Register the listener with the Location Manager to receive location updates
-        try
+        // start trying to get updates
+        if (isGPSLocationEnabled(context))
         {
-            this.manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.listener);
+            Log.i(LOG_PREFIX, "Starting GPS location tracking.");
+            this.manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.listener);
         }
-        catch (SecurityException e)
+        else if (isNetworkLocationEnabled(context))
         {
-            Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
+            Log.i(LOG_PREFIX, "Starting Network location tracking.");
+            this.manager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this.listener);
         }
     }
 
     /**
      * Ends updating location information.
      */
-    public void stopGettingLocation()
+    public void stopGettingLocation() throws SecurityException
     {
-        Log.i(LOG_PREFIX, "Stopping GPS location tracking.");
-        // Register the listener with the Location Manager to receive location updates
-        try
-        {
-            this.manager.removeUpdates(this.listener);
-        }
-        catch (SecurityException e)
-        {
-            Log.e(LOG_PREFIX, "Insufficient Permissions to remove gps listener: " + e.getMessage());
-        }
+        Log.i(LOG_PREFIX, "Stopping location tracking.");
+        // Stop trying to get updates on the location
+        this.manager.removeUpdates(this.listener);
     }
 
-
-    /**
-     * Gets an address based off of the user's current location and their previously stored addresses.
-     *
-     * @return An AddressInfo for their current location.
-     */
-    public AddressInfo getAddress()
-    {
-        Log.i(LOG_PREFIX, "Getting suggested address.");
-        int closestCoordIndex = -1;
-        double closestCoordDist = Double.MAX_VALUE;
-        List<AddressInfo> savedAddresses = StoredAddressesAccessor.getSavedAddressInfos();
-        for (int i = 0; i < savedAddresses.size(); i++)
-        {
-            GPSLatLon savedLocation = savedAddresses.get(i).getLatLon();
-            double distance = getDist(lastLocation, savedLocation);
-            if (distance < closestCoordDist)
-            {
-                closestCoordDist = distance;
-                closestCoordIndex = i;
-            }
-        }
-
-        if (closestCoordIndex > -1)
-        {
-            Log.i(LOG_PREFIX, "Searched through saved addresses, closest location is number: " +
-                    closestCoordIndex + " at coord: " + savedAddresses.get(closestCoordIndex) +
-                    " at distance away: " + closestCoordDist);
-        }
-        else
-        {
-            Log.i(LOG_PREFIX, "No saved addresses.");
-        }
-
-
-        if (closestCoordDist <= DISTANCE_THRESHOLD_METERS)
-        {
-            Log.i(LOG_PREFIX, "Closest coord is closer than threshold, using it for suggestion.");
-            return savedAddresses.get(closestCoordIndex);
-        }
-
-        try
-        {
-            Log.i(LOG_PREFIX, "Closest coord is further than threshold, looking up our location instead of using it.");
-            return lookupAddress(lastLocation.getLatitude(), lastLocation.getLongitude());
-        }
-        catch (IOException e)
-        {
-            Log.e(LOG_PREFIX, "Could not lookup nearby address. Returning blank address info. " + e.getMessage());
-            return new AddressInfo();
-        }
-    }
-
-    /**
-     * Saves the address info to the store.
-     *
-     * @param addressInfo The address info to be saved.
-     */
-    public void saveAddress(final AddressInfo addressInfo)
-    {
-        Log.i(LOG_PREFIX, "Entering saveAddress(" + addressInfo + ")");
-        if (addressInfo == null || !addressInfo.hasData())
-        {
-            Log.e(LOG_PREFIX, "Address info is empty.");
-            throw new IllegalArgumentException("Cannot save empty address info.");
-        }
-        List<AddressInfo> addressInfos = StoredAddressesAccessor.getSavedAddressInfos();
-
-        // check if the address has already been saved
-        for (AddressInfo saved : addressInfos)
-        {
-            // check if there is a saved equivalent address
-            if (addressInfo.equals(saved) && saved.getLatLon() != null)
-            {
-                // nothing to do, the saved address works fine
-                Log.i(LOG_PREFIX, "Address is already saved.");
-                return;
-            }
-        }
-
-        // check if there is anything we can pull from nearby addresses
-        if (addressInfo.getLatLon() == null)
-        {
-            Log.i(LOG_PREFIX, "LatLon is null, checking if there are any similar addresses we can get the lat lon from.");
-            for (int i = 0; i < addressInfos.size(); i++)
-            {
-                AddressInfo saved = addressInfos.get(i);
-
-                // check if it only differs by a unit address
-                if (addressInfo.isSameStreetAddress(saved))
-                {
-                    // check if we can get the lat lon from the saved equivalent street address
-                    if (saved.getLatLon() != null)
-                    {
-                        if (saved.isSameAddress(saved))
-                        {
-                            Log.i(LOG_PREFIX, "Same entire address found. No need to save.");
-                            return;
-                        }
-                        Log.i(LOG_PREFIX, "Same street address found at index: " + i + " with latlon. Taking its latlon.");
-                        addressInfo.setLatLon(saved.getLatLon());
-                        break;
-                    }
-                    Log.i(LOG_PREFIX, "Same street address found at index: " + i + " but it doesn't have a latlon.");
-                }
-            }
-        }
-
-        // check if latlon is needed
-        if (addressInfo.getLatLon() == null)
-        {
-            Log.i(LOG_PREFIX, "LatLon needs to be looked up. Looking it up.");
-            addressInfo.setLatLon(lookupLatLon(addressInfo));
-        }
-
-        // save the address info
-        Log.i(LOG_PREFIX, "Saving address");
-        StoredAddressesAccessor.addAddressInfo(addressInfo);
-        Log.i(LOG_PREFIX, "Leaving saveAddress()");
-    }
 
     /**
      * Looks up the AddressInfo at the given coordinate.
      *
      * @param latitude  Latitude of the coordinate.
      * @param longitude Longitude of the coordinate.
-     * @return An AddressInfo of the given coordinate.
-     * @throws IOException If the address cannot be looked up because of communcation reasons.
+     * @return An AddressInfo of the given coordinate. AddressInfo will be blank on errors.
      */
-    private AddressInfo lookupAddress(final double latitude, final double longitude) throws IOException
+    public AddressInfo lookupAddress(final double latitude, final double longitude)
     {
         Log.i(LOG_PREFIX, "Looking up address for lat:" + latitude + " lon:" + longitude);
-        List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-        Address address;
-        if (!addresses.isEmpty() && addresses.get(0) != null)
+        List<Address> addresses;
+        try
         {
-            address = addresses.get(0);
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
         }
-        else
+        catch (IOException e)
         {
+            Log.i(LOG_PREFIX, "Could not get address from Google.");
             return new AddressInfo();
         }
+
+        if (addresses == null || addresses.isEmpty() && addresses.get(0) == null)
+        {
+            Log.e(LOG_PREFIX, "Unable to lookup address from lat lon. Returning blank AddressInfo");
+            return new AddressInfo();
+        }
+        Address address = addresses.get(0);
 
         AddressInfo addressInfo = new AddressInfo();
         addressInfo.setCity(address.getLocality());
@@ -292,7 +196,7 @@ public class GPSHandler
      * @param addressInfo Address to look up the gps coords of
      * @return GPSLatLon of the given address or null if no results were returned.
      */
-    private GPSLatLon lookupLatLon(final AddressInfo addressInfo)
+    public GPSLatLon lookupLatLon(final AddressInfo addressInfo)
     {
         Log.i(LOG_PREFIX, "Looking up address for " + addressInfo);
         // create query string from address info
@@ -314,13 +218,14 @@ public class GPSHandler
             Log.i(LOG_PREFIX, "Could not get latlon from Google.");
             return null;
         }
-        Address address;
+
         // check nulls
-        if (addresses == null || addresses.isEmpty() || (address = addresses.get(0)) == null)
+        if (addresses == null || addresses.isEmpty() || addresses.get(0) == null)
         {
             Log.i(LOG_PREFIX, "Could not get latlon from Google.");
             return null;
         }
+        Address address = addresses.get(0);
 
         // return the coordinate of the returned address
         GPSLatLon latLon = new GPSLatLon(address.getLatitude(), address.getLongitude());
@@ -335,7 +240,7 @@ public class GPSHandler
      * @param loc2 GPSLatLon 2
      * @return The distance in meters between the two locations.
      */
-    private static double getDist(GPSLatLon loc1, GPSLatLon loc2)
+    public static double getDist(GPSLatLon loc1, GPSLatLon loc2)
     {
         if (loc1 == null)
         {
@@ -350,5 +255,22 @@ public class GPSHandler
         double distance = results[0];
         Log.i(LOG_PREFIX, "Distance between location1: " + loc1 + " and location2: " + loc2 + " is " + distance);
         return distance;
+    }
+
+    public static boolean isGPSLocationEnabled(final Context context)
+    {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static boolean isNetworkLocationEnabled(final Context context)
+    {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    public static boolean isAnyLocationEnabled(final Context context)
+    {
+        return isGPSLocationEnabled(context) || isNetworkLocationEnabled(context);
     }
 }

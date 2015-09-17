@@ -44,7 +44,13 @@ public class StoredAddressesAccessor
         return Collections.unmodifiableList(retLatLong);
     }
 
-    private static int getNumEntries() throws NumberFormatException
+    /**
+     * Gets the number of entries stored in the address store.
+     *
+     * @return The number of entries in the address store.
+     * @throws NumberFormatException
+     */
+    private static int getNumEntries()
     {
         Log.i(LOG_PREFIX, "Getting number of gps entries.");
         int numberOfEntries;
@@ -75,6 +81,8 @@ public class StoredAddressesAccessor
 
     /**
      * Removes all holes in the store and returns the size of the store.
+     * NOTE: Because getNumEntries calls this method we should not call that method from here.
+     * It may cause an infinte loop.
      *
      * @return The size of the store.
      */
@@ -136,13 +144,13 @@ public class StoredAddressesAccessor
         String gpsLatitudeValue = accessor.getInfo(GPSType.GPS_LATITUDE.toString() + index);
         String gpsLongitudeValue = accessor.getInfo(GPSType.GPS_LONGITUDE.toString() + index);
 
-        if (gpsLatitudeValue == null || gpsLongitudeValue == null)
+        GPSLatLon gpsLatLon = null;
+        if (gpsLatitudeValue != null && gpsLongitudeValue != null)
         {
-            Log.e(LOG_PREFIX, "Lat or Lon values are null at index: " + index);
-            throw new NumberFormatException("GPS Lat or Lon are null.");
+            double lat = Double.parseDouble(gpsLatitudeValue);
+            double lon = Double.parseDouble(gpsLongitudeValue);
+            gpsLatLon = new GPSLatLon(lat, lon);
         }
-        double lat = Double.parseDouble(gpsLatitudeValue);
-        double lon = Double.parseDouble(gpsLongitudeValue);
 
         AddressInfo addressInfo = new AddressInfo();
         addressInfo.setCity(city);
@@ -152,7 +160,7 @@ public class StoredAddressesAccessor
         addressInfo.setStreetAddress(streetAddress);
         addressInfo.setUnitNumber(unitNumber);
         addressInfo.setZipCode(zipCode);
-        addressInfo.setLatLon(new GPSLatLon(lat, lon));
+        addressInfo.setLatLon(gpsLatLon);
 
         Log.i(LOG_PREFIX, "Got address at index: " + index + " address: " + addressInfo);
         return addressInfo;
@@ -172,12 +180,12 @@ public class StoredAddressesAccessor
         UserInformationAccessor.getInstance().putInfo(GPSType.GPS_NUMBER_OF_ENTRIES, numEntries + "");
     }
 
-    private static void setAddressInfoAtIndex(int index, final AddressInfo addressInfo)
+    public static void setAddressInfoAtIndex(int index, final AddressInfo addressInfo)
     {
         Log.i(LOG_PREFIX, "Setting index: " + index + " to address info: " + addressInfo);
-        if (index < 0)
+        if (index < 0 || MAX_STORES <= index)
         {
-            throw new IllegalArgumentException("Index must be non-negative.");
+            throw new IllegalArgumentException("Index must be between 0 and " + MAX_STORES);
         }
 
         if (addressInfo == null)
@@ -185,19 +193,24 @@ public class StoredAddressesAccessor
             throw new IllegalArgumentException("Address Info must be non-null.");
         }
 
-        if (addressInfo.getLatLon() == null)
+        // if there was no entry stored here before we need to update the count
+        AddressInfo saved = getAddressInfoAtIndex(index);
+        if (!saved.hasData())
         {
-            throw new IllegalArgumentException("Address Info LatLon must be non-null.");
+            setNumEntries(getNumEntries() + 1);
         }
 
-        Log.i(LOG_PREFIX, "Setting GPS entry at index " + index);
         UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+        Log.i(LOG_PREFIX, "Setting GPS entry at index " + index);
 
-        Double lat = addressInfo.getLatLon().getLatitude();
-        Double lon = addressInfo.getLatLon().getLongitude();
+        // convert the doubles latitude and longitude into string representations
+        GPSLatLon latLon = addressInfo.getLatLon();
+        final String lat = (latLon != null) ? (latLon.getLatitude() + "") : null;
+        final String lon = (latLon != null) ? (latLon.getLongitude() + "") : null;
 
-        accessor.putInfo(GPSType.GPS_LATITUDE.toString() + index, lat.toString());
-        accessor.putInfo(GPSType.GPS_LONGITUDE.toString() + index, lon.toString());
+        // store all the values
+        accessor.putInfo(GPSType.GPS_LATITUDE.toString() + index, lat);
+        accessor.putInfo(GPSType.GPS_LONGITUDE.toString() + index, lon);
         accessor.putInfo(GPSType.GPS_STREET_ADDRESS.toString() + index, addressInfo.getStreetAddress());
         accessor.putInfo(GPSType.GPS_UNIT_NUMBER.toString() + index, addressInfo.getUnitNumber());
         accessor.putInfo(GPSType.GPS_ZIP_CODE.toString() + index, addressInfo.getZipCode());

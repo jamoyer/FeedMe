@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.gps.AddressInfo;
-import rainmanproductions.feedme.gps.GPSHandler;
+import rainmanproductions.feedme.gps.DeliveryAddressHandler;
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.StateCodes;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
@@ -68,7 +68,7 @@ public class DeliveryAddressDialog extends Dialog
      */
     private void fillFields()
     {
-        AddressInfo addressInfo = GPSHandler.getInstance().getAddress();
+        AddressInfo addressInfo = DeliveryAddressHandler.getAddress();
         setText(InfoType.DELIVERY_STREET_ADDRESS, addressInfo.getStreetAddress());
         setText(InfoType.DELIVERY_UNIT_NUMBER, addressInfo.getUnitNumber());
         setText(InfoType.DELIVERY_ZIP_CODE, addressInfo.getZipCode());
@@ -107,7 +107,7 @@ public class DeliveryAddressDialog extends Dialog
         addressInfo.setStateCode(stateCode);
 
         // save address for gps purposes
-        GPSHandler.getInstance().saveAddress(addressInfo);
+        DeliveryAddressHandler.saveAddress(addressInfo);
     }
 
     /**
@@ -130,7 +130,7 @@ public class DeliveryAddressDialog extends Dialog
         for (InfoType type : types)
         {
             String field = getText(type);
-            if (field == null || field.isEmpty())
+            if (field.isEmpty())
             {
                 allFieldsNonNull = false;
                 setColor(type, Color.RED);

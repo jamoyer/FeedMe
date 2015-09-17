@@ -11,6 +11,19 @@ public class AddressInfo
     private String country;
     private GPSLatLon latLon;
 
+    /**
+     * This method will format a string so that it follows the AddressInfo consistent format.
+     * This allows AddressInfos to easily be compared without having to worry about case, number of spaces...
+     *
+     * @param data
+     * @return
+     */
+    private String formatData(final String data)
+    {
+        // lowercase, remove all trailing whitespace, and change all groups of spaces, tabs, or new lines to a single space.
+        return data != null ? data.toLowerCase().trim().replaceAll("\\s+", " ") : null;
+    }
+
     public String getStreetAddress()
     {
         return streetAddress;
@@ -18,7 +31,7 @@ public class AddressInfo
 
     public void setStreetAddress(String streetAddress)
     {
-        this.streetAddress = streetAddress;
+        this.streetAddress = formatData(streetAddress);
     }
 
     public String getUnitNumber()
@@ -28,7 +41,7 @@ public class AddressInfo
 
     public void setUnitNumber(String unitNumber)
     {
-        this.unitNumber = unitNumber;
+        this.unitNumber = formatData(unitNumber);
     }
 
     public String getZipCode()
@@ -38,7 +51,7 @@ public class AddressInfo
 
     public void setZipCode(String zipCode)
     {
-        this.zipCode = zipCode;
+        this.zipCode = formatData(zipCode);
     }
 
     public String getCity()
@@ -48,7 +61,7 @@ public class AddressInfo
 
     public void setCity(String city)
     {
-        this.city = city;
+        this.city = formatData(city);
     }
 
     public String getStateName()
@@ -58,7 +71,7 @@ public class AddressInfo
 
     public void setStateName(String stateName)
     {
-        this.stateName = stateName;
+        this.stateName = formatData(stateName);
     }
 
     public String getStateCode()
@@ -68,7 +81,7 @@ public class AddressInfo
 
     public void setStateCode(String stateCode)
     {
-        this.stateCode = stateCode;
+        this.stateCode = formatData(stateCode);
     }
 
     public String getCountry()
@@ -78,7 +91,7 @@ public class AddressInfo
 
     public void setCountry(String country)
     {
-        this.country = country;
+        this.country = formatData(country);
     }
 
     public GPSLatLon getLatLon()
