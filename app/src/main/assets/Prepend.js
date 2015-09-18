@@ -52,5 +52,18 @@ function selectOption(selectElement, optionValue)
         }
     }
 }
+function randomElement(arr)
+{
+    /* check if arr is valid array with some elements */
+    if (typeof arr !== "undefined" && arr !== null && arr.length > 0)
+    {
+        return arr[getRandomInt(0, arr.length)];
+    }
+    return null;
+}
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 function pageInteractor()
 {

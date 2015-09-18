@@ -11,4 +11,4 @@ var expYearSelect = document.getElementById('Expiration_Year');
 selectOption(expYearSelect, CREDIT_CARD_EXP_YEAR);
 document.getElementById('Credit_Card_Security_Code').value = 'CREDIT_CARD_CSV_NUMBER';
 document.getElementById('Billing_Postal_Code').value = 'BILLING_ZIP_CODE';
-document.getElementsByClassName('submitButton')[0].click();
+/*document.getElementsByClassName('submitButton')[0].click();*/
