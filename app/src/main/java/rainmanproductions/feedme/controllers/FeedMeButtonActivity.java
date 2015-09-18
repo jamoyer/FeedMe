@@ -222,7 +222,6 @@ public class FeedMeButtonActivity extends AppCompatActivity
             });
             dialog.setNegativeButton("NO", new DialogInterface.OnClickListener()
             {
-
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt)
                 {

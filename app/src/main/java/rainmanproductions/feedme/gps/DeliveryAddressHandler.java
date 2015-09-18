@@ -46,6 +46,10 @@ public class DeliveryAddressHandler
         {
             // get a saved location and see if it is closer than our current closest address
             GPSLatLon savedLocation = savedAddresses.get(i).getLatLon();
+            if (savedLocation == null)
+            {
+                continue;
+            }
             double distance = GPSHandler.getDist(location, savedLocation);
             if (distance < closestCoordDist)
             {
