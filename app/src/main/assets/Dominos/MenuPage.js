@@ -57,7 +57,10 @@ function doClassics()
         if (numPeople <= 0)
         {
             /*wait some time before going to next page to let clicks finish*/
-            /*window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/AllSides/';*/
+            setTimeout(function(){
+                /*window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/AllSides/'; want to go to sides next*/
+                window.location.href = 'https://www.dominos.com/en/pages/order/#/checkout/';
+            },2000);
         }
         else
         {
