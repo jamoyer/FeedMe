@@ -33,6 +33,7 @@ public enum InfoType implements  AccessorKeyType
     BILLING_STATE_NAME(R.id.userInformationBillingState),
     BILLING_STATE_CODE(null),
     BILLING_COUNTRY(R.id.userInformationBillingCountry),
+    PARTY_SIZE(null),
     PREFERENCE_COST_PER_PERSON(R.id.preferenceCostPerPerson),
     PREFERENCE_CONFIRM_ORDERS(R.id.preferenceConfirmOrders),
     PREFERENCE_DISPLAY_BROWSER(R.id.preferenceDisplayBrowser),

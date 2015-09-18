@@ -21,6 +21,7 @@ import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.gps.GPSHandler;
 import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
+import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
 public class FeedMeButtonActivity extends AppCompatActivity
@@ -29,7 +30,6 @@ public class FeedMeButtonActivity extends AppCompatActivity
     public static final int MAXIMUM_TIME_TO_WAIT_FOR_LOCATION = 5000; // 5 seconds
     private final FeedMeButtonActivity self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
-    private Integer partySize = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -68,8 +68,9 @@ public class FeedMeButtonActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                partySize = (Integer) parent.getItemAtPosition(position);
+                Integer partySize = (Integer) parent.getItemAtPosition(position);
                 Log.i(LOG_PREFIX, "Number of people selected: " + partySize);
+                UserInformationAccessor.getInstance().putInfo(InfoType.PARTY_SIZE, partySize + "");
             }
 
             @Override
