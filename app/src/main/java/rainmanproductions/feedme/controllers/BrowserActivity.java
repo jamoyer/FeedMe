@@ -7,6 +7,7 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebView;
 
+import rainmanproductions.feedme.restaurants.WebAppInterface;
 import rainmanproductions.feedme.util.FileReader;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.restaurants.RestaurantWebViewClient;
@@ -23,6 +24,7 @@ public class BrowserActivity extends Activity
 
         WebView webview = new WebView(this);
         //webview.setVisibility(View.GONE);
+        webview.addJavascriptInterface(new WebAppInterface(this), "Android");
         FileReader.setAssetManager(this);
         setContentView(webview);
         webview.getSettings().setJavaScriptEnabled(true);
