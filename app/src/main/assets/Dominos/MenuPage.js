@@ -80,25 +80,60 @@ for(var i=0; i<toRemove.length; i++)
     console.log('Removed item ' + i);
 }
 
-/*Pick a random method type of food*/
-var randomOption = getRandomInt(0, 5);
-setTimeout(function(){
-    switch (randomOption)
+var allOptions = [
     {
-        case 0:
-            doClassics();
-            break;
-        case 1:
+        name : "classics",
+        avgCost : 11.53625,
+        operation : doClassics
+    },
+    {
+        name : "pizza",
+        avgCost : 10.74629167,
+        operation : function(){
             window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pizza/';
-            break;
-        case 2:
+        }
+    },
+    {
+        name : "pasta",
+        avgCost : 7.689,
+        operation : function(){
             window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pasta/';
-            break;
-        case 3:
+        }
+    },
+    {
+        name : "sandwiches",
+        avgCost : 6.589,
+        operation : function(){
             window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Sandwich/';
-            break;
-        case 4:
+        }
+    },
+    {
+        name : "wings",
+        avgCost : 7.24521875,
+        operation : function(){
             window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Wings/';
-            break;
+        }
+    },
+];
+
+// TODO: drinks
+
+var averageCostPersonDeliveryFee = 2.20 / numPeople;
+
+var options = [];
+for (var i = 0; i < allOptions.length; i++)
+{
+    /*Add delivery fee to costs*/
+    var averageCost = allOptions[i].avgCost + averageCostPersonDeliveryFee;
+    /*Add options only if its at most equal to the preferred cost*/
+    if (averageCost <= PREFERENCE_COST_PER_PERSON)
+    {
+        console.log("Adding " + allOptions[i].name + " to the list of possible options.");
+        options.push(allOptions[i]);
     }
-}, DEFAULT_TIME_BETWEEN_ACTIONS);
+}
+
+/*pick random option*/
+var chosenOption = randomElement(options);
+console.log("Chose to do " + chosenOption.name);
+setTimeout(chosenOption.operation,DEFAULT_TIME_BETWEEN_ACTIONS);
