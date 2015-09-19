@@ -2,11 +2,16 @@ package rainmanproductions.feedme.controllers;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.userinformation.InfoType;
@@ -64,6 +69,28 @@ public class OrderPreferencesActivity extends AppCompatActivity {
                     InfoType.PREFERENCE_NO_CHEESE
 
             };
+    private static final InfoType[] SELECTABLE_TOPPINGS =
+            {
+                    InfoType.PREFERENCE_PEPPERONI,
+                    InfoType.PREFFERENCE_GRILLED_CHICKEN,
+                    InfoType.PREFERENCE_BEEF,
+                    InfoType.PREFERENCE_SPICY_ITALIAN_SAUSAGE,
+                    InfoType.PREFERENCE_BACON,
+                    InfoType.PREFERENCE_SAUSAGE,
+                    InfoType.PREFERENCE_CANDADIAN_BACON,
+                    InfoType.PREFERENCE_ANCHOVIES,
+                    InfoType.PREFERENCE_PINEAPPLE,
+                    InfoType.PREFERENCE_ROMA_TOMATOES,
+                    InfoType.PREFERENCE_GREEN_OLIVES,
+                    InfoType.PREFERENCE_MUSHROOMS,
+                    InfoType.PREFERENCE_SAUERKRAUT,
+                    InfoType.PREFERENCE_ONIONS,
+                    InfoType.PREFERENCE_BLACK_OLIVES,
+                    InfoType.PREFERENCE_JALAPENO_PEPPERS,
+                    InfoType.PREFERENCE_EXTRA_CHEESE,
+                    InfoType.PREFERENCE_THREE_CHEESE_BLEND,
+                    InfoType.PREFERENCE_PARMESAN
+            };
     private static final InfoType[] DEFAULT_CHECKED =
             {
                     InfoType.PREFERENCE_NO_SAUCE,
@@ -72,6 +99,22 @@ public class OrderPreferencesActivity extends AppCompatActivity {
                     InfoType.PREFERENCE_RANCH_SAUCE,
                     InfoType.PREFERENCE_ANCHOVIES
             };
+
+    public static List<String> getIngredients()
+    {
+        UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+        List<String> ret = new LinkedList<>();
+        for(InfoType ingred:SELECTABLE_TOPPINGS)
+        {
+            String isExcluded = accessor.getInfo(ingred);
+            if(isExcluded != null && isExcluded.equals("false"))
+            {
+                Log.i("OrderPreferences", "Added " + ingred.toString() + " to ingred list");
+                ret.add(ingred.toString());
+            }
+        }
+        return ret;
+    }
 
     public static void setDefaultPreferencesIfNull()
     {

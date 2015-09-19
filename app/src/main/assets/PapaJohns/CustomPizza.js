@@ -2,16 +2,12 @@ var step = 0;
 
 function makePizza()
 {
-    var tester = Android.getInfo('name');
-    Android.showToast(tester);
-    var active = document.getElementsByClassName('active')[1].getAttribute('class');
+    var active = document.getElementsByClassName('active')[0].getAttribute('class');
 
     if (active.indexOf("crust") > -1)
     {
-        Android.showToast('TRUEEE');
         var selectElement = document.querySelectorAll('select');
         /*TODO: If preferences are impossible (no square or wedge cut, for example) handles it somehow*/
-        /*TODO: Parse instead of hard coding ints*/
 
         /*Select Crust*/
         var crust = selectElement[0];
@@ -91,6 +87,7 @@ function makePizza()
     else if(active.indexOf("sauce") > -1)
     {
         /*TODO*/
+        console.log("Adding sauce!");
         document.getElementsByClassName('stepButton')[step].click();
         step++;
         makePizza();
@@ -99,8 +96,119 @@ function makePizza()
     /*Select Toppings*/
     else if(active.indexOf("topping") > -1)
     {
-
+        setTimeout(addToppings, 1000);
     }
+}
+
+function addToppings()
+{
+    console.log("Adding toppings!");
+    Android.generateToppings();
+    var nextTopping = Android.getNextTopping();
+    while(nextTopping != null)
+    {
+        console.log("Adding next topping = " + nextTopping);
+        selectTopping(nextTopping);
+        nextTopping = Android.getNextTopping();
+    }
+}
+
+function selectTopping(nextTopping)
+{
+    console.log("CustomPizza adding topping: "+ nextTopping);
+    var toppings = document.querySelectorAll('img');
+    for(var i = 0; i < toppings.length; i++)
+    {
+        /*mutate nextTopping for now to avoid preprocessing*/
+        if (correctTopping(toppings[i].getAttribute('alt'), nextTopping.substring(1)))
+        {
+            console.log("MADE IT HERE --- CLICKING");
+            toppings[i].click();
+        }
+    }
+}
+
+function correctTopping(tenativeTopping, neededTopping)
+{
+    console.log('attribute is ' + tenativeTopping);
+    console.log('neededTopping is ' + neededTopping);
+    if (tenativeTopping == '3-Cheese Blend')
+    {
+        return neededTopping == 'REFERENCE_THREE_CHEESE_BLEND';
+    }
+    else if(tenativeTopping == 'Parmesan Romano')
+    {
+        return neededTopping == 'REFERENCE_PARMESAN';
+    }
+    else if(tenativeTopping == 'Extra Cheese')
+    {
+        return neededTopping == 'REFERENCE_EXTRA_CHEESE';
+    }
+    else if(tenativeTopping == 'Pineapple')
+    {
+        return neededTopping == 'REFERENCE_PINEAPPLE';
+    }
+    else if(tenativeTopping == 'Roma Tomatoes')
+    {
+        return neededTopping == 'REFERENCE_ROMA_TOMATOES';
+    }
+    else if(tenativeTopping == 'Green Olives')
+    {
+        return neededTopping == 'REFERENCE_GREEN_OLIVES';
+    }
+    else if(tenativeTopping == 'Mushrooms')
+    {
+        return neededTopping == 'REFERENCE_MUSHROOMS';
+    }
+    else if(tenativeTopping == 'Sauerkraut')
+    {
+        return neededTopping == 'REFERENCE_SAUERKRAUT';
+    }
+    else if(tenativeTopping == 'Onions')
+    {
+        return neededTopping == 'REFERENCE_ONIONS';
+    }
+    else if(tenativeTopping == 'Black Olives')
+    {
+        return neededTopping == 'REFERENCE_BLACK_OLIVES';
+    }
+    else if(tenativeTopping == 'Jalapeño Peppers')
+    {
+        return neededTopping == 'REFERENCE_JALAPENO_PEPPERS';
+    }
+    else if(tenativeTopping == 'Pepperoni')
+    {
+        return neededTopping == 'REFERENCE_PEPPERONI';
+    }
+    else if(tenativeTopping == 'Bacon')
+    {
+        return neededTopping == 'REFERENCE_BACON';
+    }
+    else if(tenativeTopping == 'Grilled Chicken')
+    {
+        return neededTopping == 'REFFERENCE_GRILLED_CHICKEN';
+    }
+    else if(tenativeTopping == 'Sausage')
+    {
+        return neededTopping == 'REFERENCE_SAUSAGE';
+    }
+    else if(tenativeTopping == 'Beef')
+    {
+        return neededTopping == 'REFERENCE_BEEF';
+    }
+    else if(tenativeTopping == 'Canadian Bacon')
+    {
+        return neededTopping == 'REFERENCE_CANDADIAN_BACON';
+    }
+    else if(tenativeTopping == 'Spicy Italian Sausage')
+    {
+        return neededTopping == 'REFERENCE_SPICY_ITALIAN_SAUSAGE';
+    }
+    else if(tenativeTopping == 'Anchovies')
+    {
+        return neededTopping == 'REFERENCE_ANCHOVIES';
+    }
+    return false;
 }
 
 makePizza();

@@ -1,6 +1,7 @@
 package rainmanproductions.feedme.controllers;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.CookieManager;
@@ -23,6 +24,9 @@ public class BrowserActivity extends Activity
         System.out.println("Entering BrowserActivity onCreate()");
 
         WebView webview = new WebView(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
         //webview.setVisibility(View.GONE);
         webview.addJavascriptInterface(new WebAppInterface(this), "Android");
         FileReader.setAssetManager(this);
