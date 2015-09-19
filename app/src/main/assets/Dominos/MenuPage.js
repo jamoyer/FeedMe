@@ -80,7 +80,8 @@ for(var i=0; i<toRemove.length; i++)
     toRemove[i].children[0].click();
     console.log('Removed item ' + i);
 }
-doClassics();
+/*doClassics();*/
+window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pizza/';
 /*var randomOption = getRandomInt(0, 5);
 switch (randomOption)
 {
