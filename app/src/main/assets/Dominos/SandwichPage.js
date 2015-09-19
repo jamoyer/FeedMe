@@ -20,12 +20,12 @@ function addFoodForPeople()
         if (numPeople <= 0)
         {
             /*wait some time before going to next page to let clicks finish*/
-            window.location.href = 'https://www.dominos.com/en/pages/order/#/checkout/';
+            window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/AllDrinks/';
         }
         else
         {
             setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS/3);
+    },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
 }
 addFoodForPeople();

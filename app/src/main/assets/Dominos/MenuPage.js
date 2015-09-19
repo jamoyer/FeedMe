@@ -82,21 +82,23 @@ for(var i=0; i<toRemove.length; i++)
 
 /*Pick a random method type of food*/
 var randomOption = getRandomInt(0, 5);
-switch (randomOption)
-{
-    case 0:
-        doClassics();
-        break;
-    case 1:
-        window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pizza/';
-        break;
-    case 2:
-        window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pasta/';
-        break;
-    case 3:
-        window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Sandwich/';
-        break;
-    case 4:
-        window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Wings/';
-        break;
-}
+setTimeout(function(){
+    switch (randomOption)
+    {
+        case 0:
+            doClassics();
+            break;
+        case 1:
+            window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pizza/';
+            break;
+        case 2:
+            window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pasta/';
+            break;
+        case 3:
+            window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Sandwich/';
+            break;
+        case 4:
+            window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Wings/';
+            break;
+    }
+}, DEFAULT_TIME_BETWEEN_ACTIONS);
