@@ -2,10 +2,12 @@ package rainmanproductions.feedme.controllers;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -116,7 +118,13 @@ public class UserInformationActivity extends AppCompatActivity
                 // save and star out the credit card number
                 if (saved != null && saved.length() == 16 && infoType == InfoType.CREDIT_CARD_NUMBER)
                 {
+                    // star out the first 12 numbers and show the last 4
                     saved = "************" + saved.substring(saved.length() - 4);
+                }
+                else if ((saved == null || saved.isEmpty()) && infoType == InfoType.PHONE_NUMBER)
+                {
+                    // suggest this phone's number if the stored phone number is null or empty
+                    saved = ((TelephonyManager)this.getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
                 }
 
                 EditText field = (EditText) findViewById(infoType.getFormId());
