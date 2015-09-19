@@ -66,5 +66,6 @@ function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+var numPeople = PARTY_SIZE;
 function pageInteractor()
 {

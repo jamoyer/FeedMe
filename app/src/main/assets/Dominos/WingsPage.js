@@ -1,5 +1,4 @@
 var items = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all wings item buttons*/
-var numPeople = PARTY_SIZE;  /*Initial number of people to feed.*/
 var specialties = [0,1,2,3];    /*Index of 12 piece specialties*/
 var boneless = 4;   /*Index of boneless options*/
 var boneIn = 5;     /*Index of bone in options*/

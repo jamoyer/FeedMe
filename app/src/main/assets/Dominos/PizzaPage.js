@@ -1,5 +1,4 @@
 var items = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all pizza item buttons*/
-var numPeople = PARTY_SIZE;
 
 function addFoodForPeople()
 {

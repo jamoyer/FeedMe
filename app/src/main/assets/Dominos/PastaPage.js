@@ -5,7 +5,6 @@ for(var i=0; i<items.length-1;i++){
     temp.push(items[i]);
 }
 items = temp;
-var numPeople = PARTY_SIZE;
 
 function addFoodForPeople()
 {

@@ -1,7 +1,6 @@
 function doClassics()
 {
     var popularItems = document.getElementsByClassName('card__list-item__title');
-    var numPeople = PARTY_SIZE;
     var greaterThan3 = [2,3,4]; /*elements 2,3,4 are medium pizzas which fill up 1.5 people*/
     var greaterThan2 = [0,1];   /*elements 0, 1 are large pizzas which fill up 2 people*/
     var greaterThan1 = [5,6,7]; /*elements 5,6,7 are single person items*/
