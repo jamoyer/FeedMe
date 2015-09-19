@@ -1,4 +1,15 @@
-var items = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all drink item buttons*/
+var buttons = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all pizza item buttons*/
+var descriptions = document.querySelectorAll('p.none--handheld');   /*A list of all pizza item descriptions*/
+var items = []; /*A list to hold non-conflicting item buttons*/
+for (var i=0; i<descriptions.length; i++)
+{
+    /*Check all keywords against each item to form a list of each items ingredients*/
+    if (!containsPreferenceConflicts(descriptions[i].innerText))
+    {
+        console.log("Adding pizza specialty " + i);
+        items.push(buttons[i]);
+    }
+}
 var peoplePer20Oz = 1;
 var peoplePer2Liter = 3;
 
@@ -13,7 +24,7 @@ function addDrinksForPeople()
     randomElement(items).click();
 
     /*Randomize drink size*/
-    setTimeout(function(){
+    attemptFunc(function(){
         var drinks = [];
         var peoplePerDrink = [];
 
@@ -52,6 +63,6 @@ function addDrinksForPeople()
         {
             setTimeout(addDrinksForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
+    }, DEFAULT_TIME_BETWEEN_ACTIONS/5);
 }
 addDrinksForPeople();

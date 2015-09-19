@@ -1,5 +1,15 @@
-var items = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all sandwich item buttons*/
-
+var buttons = document.querySelectorAll('a.none--handheld[data-clicked-element]'); /*A list of all pizza item buttons*/
+var descriptions = document.querySelectorAll('p.none--handheld');   /*A list of all pizza item descriptions*/
+var items = []; /*A list to hold non-conflicting item buttons*/
+for (var i=0; i<descriptions.length; i++)
+{
+    /*Check all keywords against each item to form a list of each items ingredients*/
+    if (!containsPreferenceConflicts(descriptions[i].innerText))
+    {
+        console.log("Adding pizza specialty " + i);
+        items.push(buttons[i]);
+    }
+}
 function addFoodForPeople()
 {
     if (numPeople <= 0)
@@ -11,7 +21,7 @@ function addFoodForPeople()
     randomElement(items).click();
 
     /*Randomize bowl type*/
-    setTimeout(function(){
+    attemptFunc(function(){
         /*Add to order*/
         document.querySelectorAll('button.btn.js-isNew')[0].click();
         numPeople--;
@@ -26,6 +36,6 @@ function addFoodForPeople()
         {
             setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
+    },DEFAULT_TIME_BETWEEN_ACTIONS / 5);
 }
 addFoodForPeople();

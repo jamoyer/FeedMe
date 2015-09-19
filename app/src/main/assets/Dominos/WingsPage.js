@@ -77,7 +77,7 @@ function addFoodForPeople()
 
     /*Continue with the customization of the item to add.*/
     /*Set timeout to let page load some.*/
-    setTimeout(function(){
+    attemptFunc(function(){
         var peopleFed;
         if (index == boneless)
         {
@@ -118,6 +118,6 @@ function addFoodForPeople()
         {
             setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
+    },DEFAULT_TIME_BETWEEN_ACTIONS / 5);
 }
 addFoodForPeople();

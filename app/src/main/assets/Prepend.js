@@ -67,5 +67,95 @@ function getRandomInt(min, max)
     return Math.floor(Math.random() * (max - min)) + min;
 }
 var numPeople = PARTY_SIZE;
+var preferenceKeyWords = [
+    {
+        preferenceType : PREFERENCE_PEPPERONI,
+        keywords : [
+            "pepperoni"
+        ]
+    },
+    {
+        preferenceType : PREFFERENCE_GRILLED_CHICKEN,
+        keywords : [
+            "chicken"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_BEEF,
+        keywords : [
+            "beef"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_BACON,
+        keywords : [
+            "bacon"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_SAUSAGE,
+        keywords : [
+            "sausage"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_ANCHOVIES,
+        keywords : [
+            "anchovies"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_PINEAPPLE,
+        keywords : [
+            "pineapple"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_MUSHROOMS,
+        keywords : [
+            "mushroom"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_SAUERKRAUT,
+        keywords : [
+            "sauerkraut"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_ONIONS,
+        keywords : [
+            "onion"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_BLACK_OLIVES,
+        keywords : [
+            "olives"
+        ]
+    },
+    {
+        preferenceType : PREFERENCE_JALAPENO_PEPPERS,
+        keywords : [
+            "jalapeno", "jalapeño"
+        ]
+    }
+];
+function containsPreferenceConflicts(text)
+{
+    for (var i=0; i<preferenceKeyWords.length; i++)
+    {
+        var doesExclude = preferenceKeyWords[i].preferenceType;
+        var keywords = preferenceKeyWords[i].keywords;
+        for (var j=0; j<keywords.length; j++)
+        {
+            if (text.indexOf(keywords[j]) > -1 && doesExclude)
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 function pageInteractor()
 {
