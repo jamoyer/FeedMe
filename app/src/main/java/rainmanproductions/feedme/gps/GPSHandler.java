@@ -120,7 +120,7 @@ public class GPSHandler
     /**
      * Begins updating location information. CAUTION : HIGH BATTERY USAGE, USE SPARINGLY!
      */
-    public void startGettingLocation() throws SecurityException
+    public synchronized void startGettingLocation() throws SecurityException
     {
         // start trying to get updates
         if (isGPSLocationEnabled(context))
@@ -138,7 +138,7 @@ public class GPSHandler
     /**
      * Ends updating location information.
      */
-    public void stopGettingLocation() throws SecurityException
+    public synchronized void stopGettingLocation() throws SecurityException
     {
         Log.i(LOG_PREFIX, "Stopping location tracking.");
         // Stop trying to get updates on the location

@@ -11,6 +11,6 @@
         />
     <item
         android:id="@+id/mainActivityTopMenuDeliveryAddress"
-        android:title="Delivery Address"
+        android:title="Saved Delivery Addresses"
         />
 </menu>

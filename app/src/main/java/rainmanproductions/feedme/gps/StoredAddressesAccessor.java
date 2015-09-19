@@ -11,7 +11,7 @@ import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 public class StoredAddressesAccessor
 {
     private static final String LOG_PREFIX = StoredAddressesAccessor.class.getSimpleName();
-    private static final int MAX_STORES = 20;
+    public static final int MAX_STORES = 20;
 
     public static List<AddressInfo> getSavedAddressInfos()
     {

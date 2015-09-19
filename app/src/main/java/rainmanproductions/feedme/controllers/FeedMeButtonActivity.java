@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import rainmanproductions.feedme.R;
 import rainmanproductions.feedme.gps.GPSHandler;
@@ -177,22 +178,47 @@ public class FeedMeButtonActivity extends AppCompatActivity
 
     private void doOrder()
     {
-        GPSHandler gpsHandler = GPSHandler.getInstance();
-        if (gpsHandler != null && GPSHandler.isAnyLocationEnabled(this))
+        final FeedMeButtonActivity self = this;
+        final GPSHandler gpsHandler = GPSHandler.getInstance();
+        if (gpsHandler != null && GPSHandler.isAnyLocationEnabled(self))
         {
+            Log.i(LOG_PREFIX, "Beginning to gather location from network or gps.");
+            Toast.makeText(getApplicationContext(), "Getting Location...", Toast.LENGTH_SHORT).show();
             gpsHandler.startGettingLocation();
-            try
+            // make a thread to wait and not take up the UI thread
+            Thread findLocationThread = new Thread()
             {
-                Thread.sleep(MAXIMUM_TIME_TO_WAIT_FOR_LOCATION);
-            }
-            catch (InterruptedException e)
-            {
-                Log.i(LOG_PREFIX, "Thread interrupted while waiting for location.");
-            }
-            gpsHandler.stopGettingLocation();
+                @Override
+                public void run()
+                {
+                    try
+                    {
+                        Thread.sleep(MAXIMUM_TIME_TO_WAIT_FOR_LOCATION);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        Log.i(LOG_PREFIX, "Thread interrupted while waiting for location.");
+                    }
+                    // once the waiting is over, start the location dialog
+                    self.runOnUiThread(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            gpsHandler.stopGettingLocation();
+                            Dialog confirmAddressDialog = new DeliveryAddressDialog(self);
+                            confirmAddressDialog.show();
+                        }
+                    });
+                }
+            };
+            findLocationThread.start();
         }
-        Dialog confirmAddressDialog = new DeliveryAddressDialog(this);
-        confirmAddressDialog.show();
+        else
+        {
+            Dialog confirmAddressDialog = new DeliveryAddressDialog(self);
+            confirmAddressDialog.show();
+        }
     }
 
     public void onAddressConfirmation(final DeliveryAddressDialog dialog)
