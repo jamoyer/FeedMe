@@ -51,7 +51,6 @@ public class UserInformationActivity extends AppCompatActivity
             };
     private static Calendar birthday;
     private String creditCardExp;
-    //TODO: Get phone number from phone
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -254,7 +253,6 @@ public class UserInformationActivity extends AppCompatActivity
         public Dialog onCreateDialog(Bundle savedInstanceState)
         {
             // Use the current date as the default date in the picker
-            // TODO c = birthday, get calendar from saved preferences
             final Calendar c = birthday != null ? birthday : Calendar.getInstance();
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);

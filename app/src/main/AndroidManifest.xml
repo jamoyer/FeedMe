@@ -22,16 +22,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controllers.BrowserActivity"
-            android:parentActivityName=".controllers.FeedMeButtonActivity">
+            android:name=".controllers.BrowserActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controllers.FeedMeButtonActivity"/>
         </activity>
         <activity
             android:name=".controllers.UserInformationActivity"
-            android:label="User Information"
-            android:parentActivityName=".controllers.FeedMeButtonActivity">
+            android:label="User Information">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".controllers.FeedMeButtonActivity"/>
