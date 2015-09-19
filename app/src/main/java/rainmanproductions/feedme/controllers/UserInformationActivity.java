@@ -49,7 +49,6 @@ public class UserInformationActivity extends AppCompatActivity
             };
     private static Calendar birthday;
     private String creditCardExp;
-    //TODO: Credit card numbers with stars
     //TODO: Get phone number from phone
 
     @Override
@@ -114,11 +113,16 @@ public class UserInformationActivity extends AppCompatActivity
             if (infoType.getFormId() != null)
             {
                 String saved = accessor.getInfo(infoType);
+                // save and star out the credit card number
+                if (saved != null && saved.length() == 16 && infoType == InfoType.CREDIT_CARD_NUMBER)
+                {
+                    saved = "************" + saved.substring(saved.length() - 4);
+                }
+
                 EditText field = (EditText) findViewById(infoType.getFormId());
                 field.setText(saved);
             }
         }
-        //TODO more fields and special fields
 
         /*
          * Sets birthday
@@ -153,6 +157,11 @@ public class UserInformationActivity extends AppCompatActivity
             {
                 EditText field = (EditText) findViewById(infoType.getFormId());
                 String text = field.getText().toString();
+                // do not save the credit card information if it has *'s, or is not cleared or full length
+                if (infoType == InfoType.CREDIT_CARD_NUMBER && (text.contains("*") || (text.length() != 16 && text.length() != 0)))
+                {
+                    continue;
+                }
                 accessor.putInfo(infoType, text);
             }
         }
