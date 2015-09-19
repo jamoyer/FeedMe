@@ -68,6 +68,12 @@ public enum DominosPageFlow implements RestaurantPageFlow
                 return pageFlow;
             }
         }
+        // This page has been seen before but just redirects to address page
+        if ("https://www.dominos.com/en/pages/order/#/product/S_ALFR/builder/".equals(url) ||
+            "https://www.dominos.com/en/pages/order/#/product/S_CARB/builder/".equals(url))
+        {
+            return ADDRESS_PAGE;
+        }
         throw new IllegalArgumentException("Unrecognized page url: " + url);
     }
 }

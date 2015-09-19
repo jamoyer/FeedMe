@@ -81,7 +81,7 @@ for(var i=0; i<toRemove.length; i++)
     console.log('Removed item ' + i);
 }
 /*doClassics();*/
-window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pizza/';
+window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Pasta/';
 /*var randomOption = getRandomInt(0, 5);
 switch (randomOption)
 {
