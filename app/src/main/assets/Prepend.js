@@ -9,6 +9,7 @@ function functionName(fun)
 }
 var DEFAULT_RETRIES = 10;
 var DEFAULT_SLEEP_TIME = 1000;
+var DEFAULT_TIME_BETWEEN_ACTIONS = 1000;
 /* Attempts the function "func" "retries" number of times, waiting "sleepTime" ms between each try. */
 function attemptFunc(func, sleepTime, retries)
 {

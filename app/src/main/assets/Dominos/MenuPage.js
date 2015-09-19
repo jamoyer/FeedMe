@@ -41,7 +41,7 @@ function doClassics()
             setTimeout(function(){
                 popularItems[secondIndex].click();
                 console.log('Added ' + popularItems[secondIndex].innerText);
-            },500);
+            },DEFAULT_TIME_BETWEEN_ACTIONS);
             numPeople -= 3;
         }
         else if(greaterThan2.indexOf(index) >= 0)
@@ -60,11 +60,11 @@ function doClassics()
             setTimeout(function(){
                 /*window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/AllSides/'; want to go to sides next*/
                 window.location.href = 'https://www.dominos.com/en/pages/order/#/checkout/';
-            },2000);
+            },DEFAULT_TIME_BETWEEN_ACTIONS * 3);
         }
         else
         {
-            setTimeout(addFoodForPeople, 500);
+            setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
     }
     addFoodForPeople();
@@ -80,9 +80,9 @@ for(var i=0; i<toRemove.length; i++)
     toRemove[i].children[0].click();
     console.log('Removed item ' + i);
 }
-/*doClassics();*/
-window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Sandwich/';
-/*var randomOption = getRandomInt(0, 5);
+
+/*Pick a random method type of food*/
+var randomOption = getRandomInt(0, 5);
 switch (randomOption)
 {
     case 0:
@@ -100,4 +100,4 @@ switch (randomOption)
     case 4:
         window.location.href = 'https://www.dominos.com/en/pages/order/#/section/Food/category/Wings/';
         break;
-}*/
+}
