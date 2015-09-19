@@ -116,15 +116,14 @@ var allOptions = [
     },
 ];
 
-// TODO: drinks
-
 var averageCostPersonDeliveryFee = 2.20 / numPeople;
+var averageCostPersonDrinks = 1.441;
 
 var options = [];
 for (var i = 0; i < allOptions.length; i++)
 {
     /*Add delivery fee to costs*/
-    var averageCost = allOptions[i].avgCost + averageCostPersonDeliveryFee;
+    var averageCost = allOptions[i].avgCost + averageCostPersonDeliveryFee + averageCostPersonDrinks;
     /*Add options only if its at most equal to the preferred cost*/
     if (averageCost <= PREFERENCE_COST_PER_PERSON)
     {
