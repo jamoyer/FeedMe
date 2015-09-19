@@ -143,6 +143,7 @@ var preferenceKeyWords = [
 ];
 function containsPreferenceConflicts(text)
 {
+    text = text.toLowerCase();
     for (var i=0; i<preferenceKeyWords.length; i++)
     {
         var doesExclude = preferenceKeyWords[i].preferenceType;
@@ -151,6 +152,7 @@ function containsPreferenceConflicts(text)
         {
             if (text.indexOf(keywords[j]) > -1 && doesExclude)
             {
+                console.log('text: \"' + text + '\" contains conflicting word: \"' + keywords[j] + '\"');
                 return true;
             }
         }
