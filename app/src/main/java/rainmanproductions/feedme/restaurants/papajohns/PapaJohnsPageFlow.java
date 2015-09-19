@@ -3,14 +3,13 @@ package rainmanproductions.feedme.restaurants.papajohns;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.restaurants.RestaurantPageFlow;
 
-/**
- * Created by Matt C on 9/9/2015.
- */
 public enum PapaJohnsPageFlow implements RestaurantPageFlow
 {
     ADDRESS_PAGE("https://www.papajohns.com/", "AddressPage.js"),
     DELIVERY_INFO_PAGE("https://www.papajohns.com/order/stores-near-me", "DeliveryInfoPage.js"),
     ORDER_PAGE("https://www.papajohns.com/order/menu", "OrderPage.js"),
+    SPECIALS_PAGE("https://www.papajohns.com/order/specials", "Specials.js"),
+    CUSTOM_PIZZA_PAGE("www.papajohns.com/order/dealbuilder", "CustomPizza.js"),
     CART_CONFIRMATION_PAGE("https://www.papajohns.com/order/cart-confirmation", "CartConfirmationPage.js"),
     VIEW_CART_PAGE("https://www.papajohns.com/order/view-cart", "ViewCartPage.js"),
     CHECKOUT_PAGE("https://www.papajohns.com/order/checkout", "CheckoutPage.js");
@@ -83,7 +82,15 @@ public enum PapaJohnsPageFlow implements RestaurantPageFlow
         {
             return CHECKOUT_PAGE;
         }
-        throw new IllegalArgumentException("Unrecognized page url: " + url + " Substring was " + (url + "padding to test for substring so I don't have to write an if statement and there are always at least 50 chars yo").substring(0, 50));
+        if (SPECIALS_PAGE.getURL().equals(url))
+        {
+            return SPECIALS_PAGE;
+        }
+        if (url.contains(CUSTOM_PIZZA_PAGE.getURL()))
+        {
+            return CUSTOM_PIZZA_PAGE;
+        }
+        throw new IllegalArgumentException("Unrecognized page url: " + url);
     }
 
 }
