@@ -12,10 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import rainmanproductions.feedme.R;
@@ -49,34 +47,53 @@ public class FeedMeButtonActivity extends AppCompatActivity
             Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
         }
 
-        createNumberOfPeopleSpinner();
         createRandomOrderButton();
         OrderPreferencesActivity.setDefaultPreferencesIfNull();
+        UserInformationAccessor.getInstance().putInfo(InfoType.PARTY_SIZE, 1 + "");
     }
 
-    private void createNumberOfPeopleSpinner()
+    public void partySizeButtonClicked(final View view)
     {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
 
-        Spinner partySizeSpinner = (Spinner) findViewById(R.id.mainActivityPartySizeSpinner);
-        Integer[] partySizeOptions = {1, 2, 3, 4, 5};
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, partySizeOptions);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        partySizeSpinner.setAdapter(arrayAdapter);
-        partySizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        // Check which radio button was clicked
+        int partySize = 1;
+        switch (view.getId())
         {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                Integer partySize = (Integer) parent.getItemAtPosition(position);
-                Log.i(LOG_PREFIX, "Number of people selected: " + partySize);
-                UserInformationAccessor.getInstance().putInfo(InfoType.PARTY_SIZE, partySize + "");
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-            }
-        });
+            case R.id.partySize5:
+                if (checked)
+                {
+                    partySize = 5;
+                    break;
+                }
+            case R.id.partySize4:
+                if (checked)
+                {
+                    partySize = 4;
+                }
+                break;
+            case R.id.partySize3:
+                if (checked)
+                {
+                    partySize = 3;
+                }
+                break;
+            case R.id.partySize2:
+                if (checked)
+                {
+                    partySize = 2;
+                }
+                break;
+            default:
+                if (checked)
+                {
+                    partySize = 1;
+                }
+                break;
+        }
+        Log.i(LOG_PREFIX, "Number of people selected: " + partySize);
+        UserInformationAccessor.getInstance().putInfo(InfoType.PARTY_SIZE, partySize + "");
     }
 
 

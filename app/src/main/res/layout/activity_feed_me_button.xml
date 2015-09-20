@@ -8,29 +8,75 @@
     android:scrollbars="vertical"
     tools:context="rainmanproductions.feedme.controllers.FeedMeButtonActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#313234"
         android:orientation="vertical"
         android:weightSum="1">
 
-        <Spinner
-            android:id="@+id/mainActivityPartySizeSpinner"
+        <RadioGroup
+            android:id="@+id/partySizeGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="68dip"
-            android:paddingLeft="98dip"
-            android:textColor="#FFFFFF"/>
+            android:background="#313234"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/partySize1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/party1_btn"
+                android:checked="true"
+                android:onClick="partySizeButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/partySize2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/party2_btn"
+                android:checked="false"
+                android:onClick="partySizeButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/partySize3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/party3_btn"
+                android:checked="false"
+                android:onClick="partySizeButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/partySize4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/party4_btn"
+                android:checked="false"
+                android:onClick="partySizeButtonClicked"/>
+
+            <RadioButton
+                android:id="@+id/partySize5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@drawable/party5_btn"
+                android:checked="false"
+                android:onClick="partySizeButtonClicked"/>
+        </RadioGroup>
 
         <ImageButton
             android:id="@+id/mainActivityRandomOrderBtn"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:layout_marginBottom="30dp"
             android:background="@drawable/launch_button"
-            tools:ignore="ContentDescription"/>
-
-    </LinearLayout>
-
+            tools:ignore="ContentDescription"
+            android:layout_below="@+id/partySizeGroup"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="60dp"/>
+    </RelativeLayout>
 </ScrollView>
