@@ -12,7 +12,8 @@ public enum PapaJohnsPageFlow implements RestaurantPageFlow
     CUSTOM_PIZZA_PAGE("www.papajohns.com/order/dealbuilder", "CustomPizza.js"),
     CART_CONFIRMATION_PAGE("https://www.papajohns.com/order/cart-confirmation", "CartConfirmationPage.js"),
     VIEW_CART_PAGE("https://www.papajohns.com/order/view-cart", "ViewCartPage.js"),
-    CHECKOUT_PAGE("https://www.papajohns.com/order/checkout", "CheckoutPage.js");
+    CHECKOUT_PAGE("https://www.papajohns.com/order/checkout", "CheckoutPage.js"),
+    DRINK_PAGE("https://www.papajohns.com/order/menu?category=Drinks", "DrinkPage.js");
 
     private static final String BASE_PATH = "PapaJohns/";
     private static boolean orderedDrink = false;
@@ -89,6 +90,10 @@ public enum PapaJohnsPageFlow implements RestaurantPageFlow
         if (url.contains(CUSTOM_PIZZA_PAGE.getURL()))
         {
             return CUSTOM_PIZZA_PAGE;
+        }
+        if (DRINK_PAGE.getURL().equals(url))
+        {
+            return DRINK_PAGE;
         }
         throw new IllegalArgumentException("Unrecognized page url: " + url);
     }
