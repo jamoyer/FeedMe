@@ -35,7 +35,7 @@
             android:id="@+id/mainActivityRandomOrderBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Random Order!"/>
+            android:background="@drawable/launch_button"/>
 
     </LinearLayout>
 </ScrollView>
