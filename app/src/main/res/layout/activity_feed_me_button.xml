@@ -2,39 +2,43 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:background="#313234"
     tools:context="rainmanproductions.feedme.controllers.FeedMeButtonActivity">
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="#313234"
         android:weightSum="1">
 
         <Spinner
             android:id="@+id/mainActivityRestaurantSpinner"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
+            android:textColor="#FFFFFF"
             android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/mainActivityPartySizeSpinner"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="68dip"
-            android:paddingLeft="98dip"/>
+            android:paddingLeft="98dip"
+            android:textColor="#FFFFFF"/>
 
         <Button
             android:id="@+id/mainActivityOrderBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Order!"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/mainActivityRandomOrderBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
             android:background="@drawable/launch_button"/>
 
     </LinearLayout>

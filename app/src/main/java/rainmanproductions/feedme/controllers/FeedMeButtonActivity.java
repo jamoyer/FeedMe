@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -119,7 +120,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
 
     private void createRandomOrderButton()
     {
-        Button btnSubmit = (Button) findViewById(R.id.mainActivityRandomOrderBtn);
+        ImageButton btnSubmit = (ImageButton) findViewById(R.id.mainActivityRandomOrderBtn);
         btnSubmit.setOnClickListener(new View.OnClickListener()
         {
             @Override
