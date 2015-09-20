@@ -48,31 +48,26 @@ public class WebAppInterface {
         String numOneTopping = getInfo("numOneTopping");
         if (numOneTopping != null && !numOneTopping.equals("0"))
         {
-            putInfo("numOneTopping",(Integer.parseInt(numOneTopping)-1)+"");
             return "1";
         }
         String numTwoTopping = getInfo("numTwoTopping");
         if (numTwoTopping != null && !numTwoTopping.equals("0"))
         {
-            putInfo("numTwoTopping",(Integer.parseInt(numTwoTopping)-1)+"");
             return "2";
         }
         String numThreeTopping = getInfo("numThreeTopping");
         if (numThreeTopping != null && !numThreeTopping.equals("0"))
         {
-            putInfo("numThreeTopping",(Integer.parseInt(numThreeTopping)-1)+"");
             return "3";
         }
         String numFourTopping = getInfo("numFourTopping");
         if (numFourTopping != null && !numFourTopping.equals("0"))
         {
-            putInfo("numFourTopping",(Integer.parseInt(numFourTopping)-1)+"");
             return "4";
         }
         String numFiveTopping = getInfo("numFiveTopping");
         if (numFiveTopping != null && !numFiveTopping.equals("0"))
         {
-            putInfo("numFiveTopping",(Integer.parseInt(numFiveTopping)-1)+"");
             return "5";
         }
         return "0";
@@ -88,7 +83,7 @@ public class WebAppInterface {
         List<String> selected = new LinkedList<>();
         List<String> selectableIngreds = OrderPreferencesActivity.getIngredients();
         Random random = new Random();
-        while (selected.size()<=numberOfToppings)
+        while (selected.size()<numberOfToppings)
         {
             int index = random.nextInt(selectableIngreds.size());
             String nextSelected = selectableIngreds.get(index);

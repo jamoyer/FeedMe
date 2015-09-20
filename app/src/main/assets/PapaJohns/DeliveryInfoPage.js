@@ -2,7 +2,7 @@ function fillDeliveryInfo()
 {
     document.getElementById('locations-streetaddress').value = "DELIVERY_STREET_ADDRESS";
     var addressSelect = document.getElementById('locations-aptstefloor');
-    if(DELIVERY_UNIT_NUMBER != null)
+    if('DELIVERY_UNIT_NUMBER')
     {
         for (var i=0; i<addressSelect.options.length; i++) {
             if (addressSelect.options[i].value === 'APT') {

@@ -1,5 +1,7 @@
 var knownMeals = [];
 var knownMealsNum = 0;
+var pricePerPerson = PREFERENCE_COST_PER_PERSON;
+var partySize = PARTY_SIZE;
 
 var quantities = ['One', 'Two', 'Three', 'Four', 'Five'];
 var sizes = ['Extra Large', 'Large', 'Medium', 'Small'];
@@ -137,11 +139,60 @@ for (var z = 0; z < specialList.length; z++)
 	}
 }
 
+var misses = 0;
+var lightenUp = false;
 var pizza = randomElement(knownMeals);
-storeRandomPizza(knownMeals[7]);
-knownMeals[7].link.click();
-/*storeRandomPizza(pizza);*/
-/*pizza.link.click();*/
+if (partySize != 1)
+{
+    while(pizza.feeds != partySize || pizza.price > pricePerPerson*partySize)
+    {
+        pizza = randomElement(knownMeals);
+        misses++;
+        if(misses > 1000)
+        {
+            lightenUp = true;
+        }
+    }
+}
+else
+{
+    for (var i = 0; i < knownMeals.length; i++)
+    {
+        console.log("name is " + knownMeals[i].name);
+        if(knownMeals[i].name.indexOf('Medium Pizza') > -1)
+        {
+            pizza = knownMeals[i];
+            break;
+        }
+    }
+    if (pizza.price > pricePerPerson)
+    {
+        lightenUp = true;
+    }
+}
+
+if(lightenUp)
+{
+    Android.showToast('Try less restriced options');
+}
+else
+{
+    storeRandomPizza(pizza);
+    pizza.link.click();
+}
+
+
+/*find specific special for debugging*/
+/*var pizza;
+for (var i = 0; i < knownMeals.length; i++)
+{
+	console.log("name is " + knownMeals[i].name);
+	if(knownMeals[i].name.indexOf('Any Lg') > -1)
+	{
+		pizza = knownMeals[i];
+		break;
+	}
+}*/
 
 function storeRandomPizza(pizza)
 {
@@ -160,6 +211,7 @@ function storeRandomPizza(pizza)
 	Android.putInfo('numThreeTopping',pizza.numThreeTopping);
 	Android.putInfo('numFourTopping',pizza.numFiveTopping);
 	Android.putInfo('numFiveTopping',pizza.numFiveTopping);
+	Android.putInfo('numPizzas', pizza.numSmall + pizza.numMedium + pizza.numLarge + pizza.numExLarge);
 }
 
 /*maybe update this function to include desserts and sides*/

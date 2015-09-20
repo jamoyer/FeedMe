@@ -30,7 +30,7 @@ function fillPapaJohnForum(){
     var costString = document.getElementById('estimated-total-summary').innerHTML;
     var costInt = costString.substring(1, costString.length);
     var finalTip = (costInt*tipPercentage).toFixed(2);
-    document.getElementById('tip-amount').value = finalTip;
+    document.getElementById('tip-amount').value = 0;
     document.getElementById('validate-order').click();
 }
 fillPapaJohnForum();
