@@ -47,7 +47,7 @@ function addFoodForPeople()
         }
         else
         {
-            attemptFunc(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
+            setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
     },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
 }
