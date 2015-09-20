@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -50,9 +49,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
             Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
         }
 
-        createRestaurantSpinner();
         createNumberOfPeopleSpinner();
-        createOrderButton();
         createRandomOrderButton();
         OrderPreferencesActivity.setDefaultPreferencesIfNull();
     }
@@ -82,41 +79,6 @@ public class FeedMeButtonActivity extends AppCompatActivity
         });
     }
 
-    private void createRestaurantSpinner()
-    {
-        Spinner restaurantSpinner = (Spinner) findViewById(R.id.mainActivityRestaurantSpinner);
-        ArrayAdapter<Restaurant> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Restaurant.values());
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        restaurantSpinner.setAdapter(arrayAdapter);
-        restaurantSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                selectedRestaurant = (Restaurant) parent.getItemAtPosition(position);
-                Log.i(LOG_PREFIX, "Restaurant selected: " + selectedRestaurant);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-            }
-        });
-    }
-
-    private void createOrderButton()
-    {
-        Button btnSubmit = (Button) findViewById(R.id.mainActivityOrderBtn);
-        btnSubmit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Log.i(LOG_PREFIX, "Order button pressed.");
-                doOrder();
-            }
-        });
-    }
 
     private void createRandomOrderButton()
     {
