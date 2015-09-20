@@ -61,8 +61,8 @@ function addDrinksForPeople()
         }
         else
         {
-            setTimeout(addDrinksForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
+            attemptFunc(addDrinksForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    }, DEFAULT_TIME_BETWEEN_ACTIONS/4);
+    }, DEFAULT_TIME_BETWEEN_ACTIONS/3);
 }
 addDrinksForPeople();

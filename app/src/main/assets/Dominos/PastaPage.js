@@ -12,7 +12,7 @@ for (var i=0; i<descriptions.length; i++)
     /*Check all keywords against each item to form a list of each items ingredients*/
     if (!containsPreferenceConflicts(descriptions[i].innerText))
     {
-        console.log("Adding pizza specialty " + i);
+        console.log("Adding pasta " + i);
         items.push(buttons[i]);
     }
 }
@@ -47,8 +47,8 @@ function addFoodForPeople()
         }
         else
         {
-            setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
+            attemptFunc(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS / 5);
+    },DEFAULT_TIME_BETWEEN_ACTIONS / 3);
 }
 addFoodForPeople();
