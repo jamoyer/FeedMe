@@ -8,11 +8,20 @@ import java.util.List;
 
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
 
+/**
+ * Responsible for storing saved addresses of the user for use later when we are trying to determine
+ * their location and address information.
+ */
 public class StoredAddressesAccessor
 {
     private static final String LOG_PREFIX = StoredAddressesAccessor.class.getSimpleName();
     public static final int MAX_STORES = 20;
 
+    /**
+     * Gets all the saved addressses as an immutable List<AddressInfo> object.
+     *
+     * @return An immutable List<AddressInfo> object.
+     */
     public static List<AddressInfo> getSavedAddressInfos()
     {
         Log.i(LOG_PREFIX, "Getting list of saved addresses.");
@@ -45,10 +54,11 @@ public class StoredAddressesAccessor
     }
 
     /**
-     * Gets the number of entries stored in the address store.
+     * Gets the number of entries stored in the address store. If the number is corrupted, this
+     * method will squash all the entries to use the lowest indices of the store space and return
+     * the newly calculated number of entries.
      *
      * @return The number of entries in the address store.
-     * @throws NumberFormatException
      */
     private static int getNumEntries()
     {
@@ -116,6 +126,11 @@ public class StoredAddressesAccessor
         return addresses.size();
     }
 
+    /**
+     * Removes all fields of the AddressInfo stored in the key store at the index.
+     *
+     * @param index The 0-indexed index to distinguish which AddressInfo to remove.
+     */
     private static void removeKeyFromStore(int index)
     {
         Log.i(LOG_PREFIX, "Removing GPS entry at index " + index);
@@ -130,6 +145,13 @@ public class StoredAddressesAccessor
         }
     }
 
+    /**
+     * Retrieves the AddressInfo stored in the key store at this 0-indexed index.
+     *
+     * @param index A 0-indexed index specifying the location of the AddressInfo.
+     * @return The AddressInfo stored at the index.
+     * @throws NumberFormatException When the latitude and longitude cannot be parsed as doubles.
+     */
     private static AddressInfo getAddressInfoAtIndex(int index) throws NumberFormatException
     {
         Log.i(LOG_PREFIX, "Getting GPS entry at index " + index);
@@ -166,6 +188,11 @@ public class StoredAddressesAccessor
         return addressInfo;
     }
 
+    /**
+     * Adds an AddressInfo to the store at the smallest unused index..
+     *
+     * @param addressInfo The AddressInfo to store.
+     */
     public static void addAddressInfo(final AddressInfo addressInfo)
     {
         int numEntries = getNumEntries();
@@ -174,12 +201,23 @@ public class StoredAddressesAccessor
         setNumEntries(numEntries);
     }
 
+    /**
+     * Sets the GPSType.GPS_NUMBER_OF_ENTRIES value of the keystore to numEntries.
+     *
+     * @param numEntries The number of entries in the key store.
+     */
     private static void setNumEntries(int numEntries)
     {
         Log.i(LOG_PREFIX, "Setting number of address entries to " + numEntries);
         UserInformationAccessor.getInstance().putInfo(GPSType.GPS_NUMBER_OF_ENTRIES, numEntries + "");
     }
 
+    /**
+     * Puts the AddressInfo into the keystore at the index location.
+     *
+     * @param index       A 0-indexed location to put the AddressInfo.
+     * @param addressInfo The AddressInfo to store.
+     */
     public static void setAddressInfoAtIndex(int index, final AddressInfo addressInfo)
     {
         Log.i(LOG_PREFIX, "Setting index: " + index + " to address info: " + addressInfo);

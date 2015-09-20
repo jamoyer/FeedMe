@@ -1,5 +1,8 @@
 package rainmanproductions.feedme.gps;
 
+/**
+ * A simple class which holds a latitude and a longitude. This class is immutable.
+ */
 public class GPSLatLon
 {
     private final double latitude;
@@ -58,11 +61,16 @@ public class GPSLatLon
         return result;
     }
 
+    /**
+     * Constructs a new GPSLatLon from the given latitude and longitude values. Once set, these
+     * values may not change during the lifetime of the object.
+     *
+     * @param latitude  The number of degrees north or south of the earth's equator (90 -> -90).
+     * @param longitude The number of degrees east or west of the earth's prime meridian (180 - -180)
+     */
     public GPSLatLon(double latitude, double longitude)
     {
         this.latitude = latitude;
-
         this.longitude = longitude;
-
     }
 }

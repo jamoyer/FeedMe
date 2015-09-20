@@ -3,6 +3,10 @@ package rainmanproductions.feedme.gps;
 
 import rainmanproductions.feedme.userinformation.AccessorKeyType;
 
+/**
+ * This enum holds keys which are appended to and used to store previous addresses of the user to be
+ * used later presumably.
+ */
 public enum GPSType implements AccessorKeyType
 {
     GPS_NUMBER_OF_ENTRIES,

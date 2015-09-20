@@ -1,5 +1,8 @@
 package rainmanproductions.feedme.gps;
 
+/**
+ * A class representing an address and holding all relevant information for FeedMe about that address.
+ */
 public class AddressInfo
 {
     private String streetAddress;
@@ -15,8 +18,8 @@ public class AddressInfo
      * This method will format a string so that it follows the AddressInfo consistent format.
      * This allows AddressInfos to easily be compared without having to worry about case, number of spaces...
      *
-     * @param data
-     * @return
+     * @param data The string to be formatted.
+     * @return The input string made toLowerCase(), trimmed whitespace, and all inner whitespace shrunk to one space
      */
     private String formatData(final String data)
     {
@@ -144,48 +147,11 @@ public class AddressInfo
         return false;
     }
 
-    public boolean hasEmptyField()
-    {
-        if (latLon == null)
-        {
-            return true;
-        }
-        if (streetAddress == null || streetAddress.isEmpty())
-        {
-            return true;
-        }
-        if (unitNumber == null || unitNumber.isEmpty())
-        {
-            return true;
-        }
-        if (zipCode == null || zipCode.isEmpty())
-        {
-            return true;
-        }
-        if (city == null || city.isEmpty())
-        {
-            return true;
-        }
-        if (stateName == null || stateName.isEmpty())
-        {
-            return true;
-        }
-        if (stateCode == null || stateCode.isEmpty())
-        {
-            return true;
-        }
-        if (country == null || country.isEmpty())
-        {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Checks if all address fields (except unit number and state code) are the same.
      *
-     * @param that
-     * @return
+     * @param that The address to compare with this one.
+     * @return true if these two AddressInfos have the same street address, except for unit number.
      */
     public boolean isSameStreetAddress(final AddressInfo that)
     {
@@ -216,6 +182,12 @@ public class AddressInfo
         return true;
     }
 
+    /**
+     * Checks if all of the address fields match between this AddressInfo and the passed one.
+     *
+     * @param that The AddressInfo to compare to this one.
+     * @return true if all address fields (not latitude nor longitude) are equal, false otherwise.
+     */
     public boolean isSameAddress(final AddressInfo that)
     {
         if (that == null)

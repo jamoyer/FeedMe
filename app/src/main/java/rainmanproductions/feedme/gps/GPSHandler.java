@@ -15,7 +15,8 @@ import java.util.List;
 import rainmanproductions.feedme.userinformation.StateCodes;
 
 /**
- * To be the main API for looking up addresses or getting the current location.
+ * This class is the interface to access and interact with all GPS objects such as LocationManager,
+ * LocationListeners, Geocoders, etc ...
  */
 public class GPSHandler
 {
@@ -112,6 +113,9 @@ public class GPSHandler
         };
     }
 
+    /**
+     * @return The last known location of the phone.
+     */
     public GPSLatLon getLocation()
     {
         return lastLocation;
@@ -254,18 +258,37 @@ public class GPSHandler
         return distance;
     }
 
+    /**
+     * Checks if the GPS Location Provider is enabled to get the phone's location from GPS.
+     *
+     * @param context A base context or parent context that calls this method.
+     * @return true if the GPS_PROVIDER is enabled.
+     */
     public static boolean isGPSLocationEnabled(final Context context)
     {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
+    /**
+     * Checks if the Network Location Provider is enabled to get the phone's location from the
+     * Network.
+     *
+     * @param context A base context or parent context that calls this method.
+     * @return true if the NETWORK_PROVIDER is enabled.
+     */
     public static boolean isNetworkLocationEnabled(final Context context)
     {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    /**
+     * Checks if any location providers are enabled so we can get the phone's location in any way.
+     *
+     * @param context A base context or parent context that calls this method.
+     * @return true if the NETWORK_PROVIDER or GPS_PROVIDER is enabled.
+     */
     public static boolean isAnyLocationEnabled(final Context context)
     {
         return isGPSLocationEnabled(context) || isNetworkLocationEnabled(context);

@@ -5,9 +5,14 @@ import android.util.Log;
 import java.util.List;
 
 /**
- * To be the main API that the UI should use to handle getting the users current address or storing addresses.
+ * To be the main API that the UI should use to handle getting the users current address or storing
+ * addresses.
  * <p/>
  * This API will handle the procedure of interacting with the GPSHandler or storing saved addresses.
+ * <p/>
+ * It has two public methods getAddress() and saveAddress() which handle interracting with the
+ * GPSHandler and the StoredAddressesAccessor as much as possible to make it simple for the
+ * controllers to call.
  */
 public class DeliveryAddressHandler
 {
