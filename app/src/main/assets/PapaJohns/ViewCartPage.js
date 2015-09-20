@@ -1,15 +1,15 @@
 /*adds a second 2 liter if only 1 in cart*/
 var products = document.getElementsByClassName("cart-items")[0].getElementsByClassName('product-name');
-var numTwoLiters = 0;
+var numDrinks = 0;
 for(var i = 0; i < products.length; i++)
 {
-    if(products[i].innerText.indexOf('Liter') > -1)
+    if(products[i].innerText.toLowerCase().indexOf('liter') > -1 || products[i].innerText.toLowerCase().indexOf('20-oz') > -1)
     {
-        numTwoLiters++;
+        numDrinks++;
     }
-    console.log("num 2 liters = " + numTwoLiters);
+    console.log("num 2 liters = " + numDrinks);
 }
-if (numTwoLiters < 2 && PARTY_SIZE ==5 )
+if (numDrinks < 2 && PARTY_SIZE ==5 )
 {
     window.location.href = '/order/menu?category=Drinks';
 }

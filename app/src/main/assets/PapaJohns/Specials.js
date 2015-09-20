@@ -151,6 +151,7 @@ if (partySize != 1)
         if(misses > 1000)
         {
             lightenUp = true;
+            break;
         }
     }
 }
