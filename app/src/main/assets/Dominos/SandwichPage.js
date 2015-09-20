@@ -36,6 +36,6 @@ function addFoodForPeople()
         {
             setTimeout(addFoodForPeople, DEFAULT_TIME_BETWEEN_ACTIONS);
         }
-    },DEFAULT_TIME_BETWEEN_ACTIONS / 5);
+    },DEFAULT_TIME_BETWEEN_ACTIONS / 4);
 }
 addFoodForPeople();
