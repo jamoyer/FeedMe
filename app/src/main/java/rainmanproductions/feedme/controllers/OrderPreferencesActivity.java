@@ -1,7 +1,7 @@
 package rainmanproductions.feedme.controllers;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -138,6 +137,7 @@ public class OrderPreferencesActivity extends AppCompatActivity {
         {
             accessor.putInfo(InfoType.PREFERENCE_COST_PER_PERSON, "15.00");
         }
+        accessor.putInfo(InfoType.PARTY_SIZE, 1 + "");
     }
 
     public void resetDefaultPreferences(View view)

@@ -28,6 +28,10 @@ public class DeliveryAddressDialog extends Dialog
                     InfoType.DELIVERY_ZIP_CODE
             };
 
+    // use the last confirmed address if it has been confirmed within 10 minutes
+    private static final int REFRESH_ADDRESS_TIME_INTERVAL_THRESHOLD_MINUTES = 10;
+    private static final long REFRESH_ADDRESS_TIME_INTERVAL_THRESHOLD_MILLIS = 1000 * 60 * REFRESH_ADDRESS_TIME_INTERVAL_THRESHOLD_MINUTES;
+
     private final FeedMeButtonActivity parent;
 
     public DeliveryAddressDialog(final Context context)
@@ -68,13 +72,55 @@ public class DeliveryAddressDialog extends Dialog
      */
     private void fillFields()
     {
-        AddressInfo addressInfo = DeliveryAddressHandler.getAddress();
+
+        AddressInfo addressInfo;
+        if (deliveryAddressIsOutdated())
+        {
+            Log.i(LOG_PREFIX, "Last confirmed address is more than " + REFRESH_ADDRESS_TIME_INTERVAL_THRESHOLD_MINUTES + " minutes old. Getting a new address.");
+            addressInfo = DeliveryAddressHandler.getAddress();
+        }
+        else
+        {
+            Log.i(LOG_PREFIX, "Last confirmed address is fresh. Not getting a new address.");
+            UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+            addressInfo = new AddressInfo();
+            addressInfo.setZipCode(accessor.getInfo(InfoType.DELIVERY_ZIP_CODE));
+            addressInfo.setCountry(accessor.getInfo(InfoType.DELIVERY_COUNTRY));
+            addressInfo.setCity(accessor.getInfo(InfoType.DELIVERY_CITY));
+            addressInfo.setUnitNumber(accessor.getInfo(InfoType.DELIVERY_UNIT_NUMBER));
+            addressInfo.setStreetAddress(accessor.getInfo(InfoType.DELIVERY_STREET_ADDRESS));
+            addressInfo.setStateName(accessor.getInfo(InfoType.DELIVERY_STATE_NAME));
+        }
+
         setText(InfoType.DELIVERY_STREET_ADDRESS, addressInfo.getStreetAddress());
         setText(InfoType.DELIVERY_UNIT_NUMBER, addressInfo.getUnitNumber());
         setText(InfoType.DELIVERY_ZIP_CODE, addressInfo.getZipCode());
         setText(InfoType.DELIVERY_CITY, addressInfo.getCity());
         setText(InfoType.DELIVERY_STATE_NAME, addressInfo.getStateName());
         setText(InfoType.DELIVERY_COUNTRY, addressInfo.getCountry());
+    }
+
+    public static boolean deliveryAddressIsOutdated()
+    {
+        Log.i(LOG_PREFIX, "Entering deliveryAddressIsOutdated()");
+        UserInformationAccessor accessor = UserInformationAccessor.getInstance();
+        long now = System.currentTimeMillis();
+        long lastConfirmedAddressTimeMillis = 0;
+        try
+        {
+            String lastConfirmedAddressTime = accessor.getInfo(InfoType.DELIVERY_UPDATED_TIME);
+            lastConfirmedAddressTimeMillis = Long.parseLong(lastConfirmedAddressTime);
+        }
+        catch (NumberFormatException | NullPointerException e)
+        {
+            Log.e(LOG_PREFIX, "Unable to get DELIVERY_UPDATED_TIME as a number.");
+        }
+
+        long lastConfirmedAddressAge = now - lastConfirmedAddressTimeMillis;
+        boolean isOutdated = lastConfirmedAddressAge > REFRESH_ADDRESS_TIME_INTERVAL_THRESHOLD_MILLIS;
+        Log.i(LOG_PREFIX, "deliveryAddressIsOutdated is " + isOutdated + ". " +
+                "Last confirmed address is " + lastConfirmedAddressAge / 1000 + " seconds old.");
+        return isOutdated;
     }
 
     /**
@@ -92,6 +138,8 @@ public class DeliveryAddressDialog extends Dialog
                 accessor.putInfo(infoType, getText(infoType));
             }
         }
+        // save current time as update time
+        accessor.putInfo(InfoType.DELIVERY_UPDATED_TIME, System.currentTimeMillis() + "");
 
         String stateName = accessor.getInfo(InfoType.DELIVERY_STATE_NAME);
         String stateCode = StateCodes.getCode(stateName);
@@ -106,14 +154,14 @@ public class DeliveryAddressDialog extends Dialog
         addressInfo.setStateName(accessor.getInfo(InfoType.DELIVERY_STATE_NAME));
         addressInfo.setStateCode(stateCode);
 
-        // save address for gps purposes
+        // save address for later uses
         DeliveryAddressHandler.saveAddress(addressInfo);
     }
 
     /**
      * Checks if all the important fields on the dialog are set and if not it sets them red.
      *
-     * @return
+     * @return true if all the necessary fields are set, otherwise false.
      */
     private boolean checkAllFieldsNonNull()
     {

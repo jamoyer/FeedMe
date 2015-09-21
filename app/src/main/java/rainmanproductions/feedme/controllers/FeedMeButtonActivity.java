@@ -22,13 +22,16 @@ import rainmanproductions.feedme.restaurants.FoodPicker;
 import rainmanproductions.feedme.restaurants.Restaurant;
 import rainmanproductions.feedme.userinformation.InfoType;
 import rainmanproductions.feedme.userinformation.UserInformationAccessor;
+import rainmanproductions.feedme.util.FileReader;
 
 public class FeedMeButtonActivity extends AppCompatActivity
 {
     private static final String LOG_PREFIX = "FeedMeButtonActivity";
-    public static final int MAXIMUM_TIME_TO_WAIT_FOR_LOCATION = 5000; // 5 seconds
+    public static final int MAXIMUM_TIME_TO_WAIT_FOR_LOCATION = 2000; // 2 seconds
     private final FeedMeButtonActivity self = this;
     private Restaurant selectedRestaurant = Restaurant.DOMINOS;
+    private static boolean isFindingLocation = false;
+    private static boolean applicationHasStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,20 +39,24 @@ public class FeedMeButtonActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_me_button);
 
-        UserInformationAccessor.init(this);
-        try
+        if (!applicationHasStarted)
         {
-            checkAndPromptLocationEnableDialog();
-            GPSHandler.init(this);
-        }
-        catch (SecurityException e)
-        {
-            Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
+            applicationHasStarted = true;
+            UserInformationAccessor.init(this);
+            FileReader.setAssetManager(this);
+            try
+            {
+                checkAndPromptLocationEnableDialog();
+                GPSHandler.init(this);
+            }
+            catch (SecurityException e)
+            {
+                Log.e(LOG_PREFIX, "Insufficient Permissions to add gps listener: " + e.getMessage());
+            }
+            OrderPreferencesActivity.setDefaultPreferencesIfNull();
         }
 
         createRandomOrderButton();
-        OrderPreferencesActivity.setDefaultPreferencesIfNull();
-        UserInformationAccessor.getInstance().putInfo(InfoType.PARTY_SIZE, 1 + "");
     }
 
     public void partySizeButtonClicked(final View view)
@@ -158,12 +165,22 @@ public class FeedMeButtonActivity extends AppCompatActivity
 
     private void doOrder()
     {
-        final FeedMeButtonActivity self = this;
+        final FeedMeButtonActivity feedMeButtonActivity = this;
         final GPSHandler gpsHandler = GPSHandler.getInstance();
-        if (gpsHandler != null && GPSHandler.isAnyLocationEnabled(self))
+
+        // use gps or network to get location if ...
+        if (gpsHandler != null &&   // the handler is available
+                GPSHandler.isAnyLocationEnabled(feedMeButtonActivity) &&    // we can get location
+                !isFindingLocation &&   // we aren't already finding location
+                !DeliveryAddressDialog.deliveryAddressIsOutdated()) // the current address is too old
         {
+            isFindingLocation = true;
             Log.i(LOG_PREFIX, "Beginning to gather location from network or gps.");
-            Toast.makeText(getApplicationContext(), "Getting Location...", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(getApplicationContext(),
+                    "Getting Location...",
+                    MAXIMUM_TIME_TO_WAIT_FOR_LOCATION)   // android studio is wrong, any number works here
+                    .show();
             gpsHandler.startGettingLocation();
             // make a thread to wait and not take up the UI thread
             Thread findLocationThread = new Thread()
@@ -180,13 +197,14 @@ public class FeedMeButtonActivity extends AppCompatActivity
                         Log.i(LOG_PREFIX, "Thread interrupted while waiting for location.");
                     }
                     // once the waiting is over, start the location dialog
-                    self.runOnUiThread(new Runnable()
+                    feedMeButtonActivity.runOnUiThread(new Runnable()
                     {
                         @Override
                         public void run()
                         {
                             gpsHandler.stopGettingLocation();
-                            Dialog confirmAddressDialog = new DeliveryAddressDialog(self);
+                            isFindingLocation = false;
+                            Dialog confirmAddressDialog = new DeliveryAddressDialog(feedMeButtonActivity);
                             confirmAddressDialog.show();
                         }
                     });
@@ -196,7 +214,7 @@ public class FeedMeButtonActivity extends AppCompatActivity
         }
         else
         {
-            Dialog confirmAddressDialog = new DeliveryAddressDialog(self);
+            Dialog confirmAddressDialog = new DeliveryAddressDialog(feedMeButtonActivity);
             confirmAddressDialog.show();
         }
     }

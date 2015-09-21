@@ -2,7 +2,7 @@ package rainmanproductions.feedme.userinformation;
 
 import rainmanproductions.feedme.R;
 
-public enum InfoType implements  AccessorKeyType
+public enum InfoType implements AccessorKeyType
 {
     //TODO: Refactor and break apart
     FIRST_NAME(R.id.userInformationFirstName),
@@ -19,6 +19,7 @@ public enum InfoType implements  AccessorKeyType
     CREDIT_CARD_CSV_NUMBER(R.id.userInformationCreditCardCSV),
     CREDIT_CARD_EXP_MONTH_NUM(null),
     CREDIT_CARD_EXP_YEAR(R.id.userInformationCreditCardExpYear),
+    DELIVERY_UPDATED_TIME(null),
     DELIVERY_STREET_ADDRESS(R.id.deliveryStreetAddress),
     DELIVERY_UNIT_NUMBER(R.id.deliveryUnitNumber),
     DELIVERY_ZIP_CODE(R.id.deliveryZipCode),

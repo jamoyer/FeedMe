@@ -16,14 +16,9 @@ public class FileReader
     private static String appendJs = null;
     private static AssetManager assetManager;
 
-    public static void setAssetManager(final AssetManager manager)
-    {
-        assetManager = manager;
-    }
-
     public static void setAssetManager(final Context context)
     {
-        setAssetManager(context.getAssets());
+        assetManager = context.getAssets();
     }
 
     /**
