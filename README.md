@@ -6,4 +6,4 @@ The goal for the app is to be able to open up the app on your phone and select t
 Currently the app has two restaurants implemented: Dominos and PapaJohns and JimmyJohns is soon to be added.
 
 This is the first and main screen of the app when you open it.
-![](displayImages/main.png)
+![](displayImages/main.jpg)
